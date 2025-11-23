@@ -3,7 +3,8 @@ import { Message } from "@/lib/db";
 import { getIO } from "@/lib/socket";
 
 export async function GET() {
-  getIO();
+  const io = getIO();
+  console.log("Socket connected: ", io);
 
   const messages = await Message.find();
   console.log("Messages pulled: ", messages);
