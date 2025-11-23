@@ -1,14 +1,9 @@
 import mongoose from "mongoose";
 
-const getTime = (): number => {
-  const now = new Date.now();
-  return now;
-};
-
 const messageSchema = new mongoose.Schema({
   userId: String,
   message: String,
-  time: { type: String, default: getTime() },
+  time: String,
 });
 
 export const Message =

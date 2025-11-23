@@ -1,4 +1,4 @@
-export default function NotificationsLayout({
+export default function MainLayout({
   children,
 }: {
   children: Readonly<React.ReactNode>;
