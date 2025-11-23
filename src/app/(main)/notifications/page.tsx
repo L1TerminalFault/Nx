@@ -13,6 +13,7 @@ type Notification = {
 export default function Notification() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const PORT = 30000;
 
   useEffect(() => {
@@ -20,20 +21,26 @@ export default function Notification() {
 
     (async () => {
       setLoading(true);
-      const messagesFetched = await (
-        await fetch("/api/getNotifications")
-      ).json();
-      setNotifications(messagesFetched);
+      setError(null);
+      try {
+        const messagesFetched = await (
+          await fetch("/api/notifications/getNotifications")
+        ).json();
+        setNotifications(messagesFetched);
 
-      socket = io(`${window.location.origin}:${PORT}`);
-      socket.on("message", (notif: Notification) =>
-        setNotifications((prev: Notification[]): Notification[] => [
-          ...prev,
-          notif,
-        ]),
-      );
-
-      setLoading(false);
+        socket = io(`${window.location.origin}:${PORT}`);
+        socket.on("message", (notif: Notification) =>
+          setNotifications((prev: Notification[]): Notification[] => [
+            ...prev,
+            notif,
+          ]),
+        );
+      } catch (err) {
+        console.error("Error: ", err);
+        setError("Couldn't fetch notifications");
+      } finally {
+        setLoading(false);
+      }
     })();
 
     return () => {
@@ -46,6 +53,8 @@ export default function Notification() {
       <div className="text-xl">Notifications Page</div>
       {loading ? (
         <div>Loading</div>
+      ) : error ? (
+        <div>{error}</div>
       ) : !notifications ? (
         <div>Could not load notifications</div>
       ) : !notifications?.length ? (
