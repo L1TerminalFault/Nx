@@ -29,7 +29,8 @@ export default function Notification() {
         ).json();
         setNotifications(messagesFetched.messages);
 
-        socket = io(`${window.location.origin}:${PORT}`);
+        socket = io(`${window.location.origin()}:${PORT}`);
+        alert(window.location.origin.toString());
         socket.on("message", (notif: Notification) => {
           alert("socket event 'messae' dropped");
           setNotifications((prev: Notification[]): Notification[] => [
