@@ -29,12 +29,13 @@ export default function Notification() {
         setNotifications(messagesFetched.messages);
 
         socket = io(`${window.location.origin}:${PORT}`);
-        socket.on("message", (notif: Notification) =>
+        socket.on("message", (notif: Notification) => {
+          alert("socket event 'messae' dropped");
           setNotifications((prev: Notification[]): Notification[] => [
             ...prev,
             notif,
-          ]),
-        );
+          ]);
+        });
       } catch (err) {
         console.error("Error: ", err);
         setError("Couldn't fetch notifications");

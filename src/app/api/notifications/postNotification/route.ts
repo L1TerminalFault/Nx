@@ -2,15 +2,15 @@ import { Message } from "@/lib/db";
 
 import { getIO } from "@/lib/socket";
 
+type Message = { userId: string; message: string; time: string };
 export async function POST(request: Request) {
-  const message: { userId: string; message: string; time: string } =
-    await request.json();
+  const message: Message = await request.json();
 
   console.log("Message Recieved: ", message);
-  await Message.create(message);
+  const messageRtr: Message = await Message.create(message);
 
   const io = getIO();
-  io.emit("message", { ...message, _id: 1 });
+  io.emit("message", { ...message, _id: messageRtr._id });
 
   return Response.json({ status: "success" });
 }
