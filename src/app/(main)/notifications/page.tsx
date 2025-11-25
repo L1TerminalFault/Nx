@@ -26,7 +26,7 @@ export default function Notification() {
         const messagesFetched = await (
           await fetch("/api/notifications/getNotifications")
         ).json();
-        setNotifications(messagesFetched);
+        setNotifications(messagesFetched.messages);
 
         socket = io(`${window.location.origin}:${PORT}`);
         socket.on("message", (notif: Notification) =>
@@ -61,7 +61,13 @@ export default function Notification() {
         <div>No notifications</div>
       ) : (
         notifications?.map((notification) => (
-          <div key={null}>{notification.message}</div>
+          <div
+            key={notification.userId}
+            className="flex flex-col bg-gray-900 px-6 py-2 m-1 rounded-2xl"
+          >
+            <div className="text-2xl">{notification.time}</div>
+            <div className="text-gray-300">{notification.message}</div>
+          </div>
         ))
       )}
     </div>
