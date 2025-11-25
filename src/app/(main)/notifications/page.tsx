@@ -65,7 +65,9 @@ export default function Notification() {
             key={notification.userId}
             className="flex flex-col bg-gray-900 px-6 py-2 m-1 rounded-2xl"
           >
-            <div className="text-2xl">{notification.time}</div>
+            <div className="text-2xl">
+              {new Date(parseInt(notification.time)).toLocaleString()}
+            </div>
             <div className="text-gray-300">{notification.message}</div>
           </div>
         ))
