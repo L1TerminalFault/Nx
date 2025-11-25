@@ -2,7 +2,7 @@ import { Message } from "@/lib/db";
 
 import { getIO } from "@/lib/socket";
 
-type Message = { userId: string; message: string; time: string };
+type Message = { _id: string; userId: string; message: string; time: string };
 export async function POST(request: Request) {
   const message: Message = await request.json();
 
