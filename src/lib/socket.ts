@@ -5,7 +5,7 @@ let io: IOServer | null = null;
 export function getIO() {
   if (io) return io;
 
-  io = new IOServer({
+  io = new IOServer(30000, {
     cors: {
       origin: "*",
     },

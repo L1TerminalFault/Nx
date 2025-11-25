@@ -10,11 +10,12 @@ type Notification = {
   time: string;
 };
 
+const PORT = 30000;
+
 export default function Notification() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const PORT = 30000;
 
   useEffect(() => {
     let socket: Socket;
