@@ -24,7 +24,7 @@ export default function Notification() {
     const connectionString = localStorage.getItem("__nx_connection_string__");
     alert(connectionString);
     if (connectionString) {
-      if (connectionString !== "configure") {
+      if (!window.location.origin.toString().includes("configure")) {
         (async () => {
           setLoading(true);
           setError(null);
@@ -85,7 +85,7 @@ export default function Notification() {
           <div
             onClick={() => {
               localStorage.setItem("__nx_connection_string__", code);
-              router.replace("/code");
+              router.replace("/configure");
             }}
           >
             Done
@@ -103,7 +103,15 @@ export default function Notification() {
             <div>No notifications</div>
           ) : (
             <>
-              <div className="p-3 flex justify-end">RESET</div>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("__nx_connection_string__");
+                  router.replace("/configure");
+                }}
+                className="p-3 flex justify-end"
+              >
+                RESET
+              </div>
               {notifications?.map((notification) => (
                 <div
                   key={notification.connectionString}
