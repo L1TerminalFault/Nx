@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 // import { io, Socket } from "socket.io-client";
 
@@ -18,49 +18,47 @@ export default function Notification() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [notConfigured, setNotConfigured] = useState(false);
+  const pathname = usePathname();
+  const segments = pathname.split("/").filter(Boolean);
+  const lastSegment = segments[segments.length - 1];
 
   useEffect(() => {
     // let socket: Socket;
     const connectionString = localStorage.getItem("__nx_connection_string__");
     alert(connectionString);
-    if (connectionString) {
-      if (!window.location.origin.toString().includes("configure")) {
-        (async () => {
-          setLoading(true);
-          setError(null);
-          try {
-            const messagesFetched = await (
-              await fetch(
-                `/api/notifications/getNotifications?connectionString=${connectionString}`,
-              )
-            ).json();
-            setNotifications(messagesFetched.messages);
+    if (!connectionString || lastSegment !== connectionString) {
+      (async () => {
+        setLoading(true);
+        setError(null);
+        try {
+          const messagesFetched = await (
+            await fetch(
+              `/api/notifications/getNotifications?connectionString=${connectionString}`,
+            )
+          ).json();
+          setNotifications(messagesFetched.messages);
 
-            // socket = io(`${window.location.origin.toString()}:${PORT}`);
-            // alert(window.location.origin.toString());
-            // socket.on("message", (notif: Notification) => {
-            //   alert("socket event 'messae' dropped");
-            //   setNotifications((prev: Notification[]): Notification[] => [
-            //     ...prev,
-            //     notif,
-            //   ]);
-            // });
-          } catch (err) {
-            console.error("Error: ", err);
-            setError("Couldn't fetch notifications");
-          } finally {
-            setLoading(false);
-          }
-        })();
-      } else {
-        setNotConfigured(true);
-        setLoading(false);
-      }
+          // socket = io(`${window.location.origin.toString()}:${PORT}`);
+          // alert(window.location.origin.toString());
+          // socket.on("message", (notif: Notification) => {
+          //   alert("socket event 'messae' dropped");
+          //   setNotifications((prev: Notification[]): Notification[] => [
+          //     ...prev,
+          //     notif,
+          //   ]);
+          // });
+        } catch (err) {
+          console.error("Error: ", err);
+          setError("Couldn't fetch notifications");
+        } finally {
+          setLoading(false);
+        }
+      })();
     } else {
       setNotConfigured(true);
       setLoading(false);
     }
-  }, []);
+  }, [lastSegment]);
 
   function generateCode() {
     return `${(Math.random() * 10000).toFixed(0)}-${(Math.random() * 10000).toFixed(0)}`;
