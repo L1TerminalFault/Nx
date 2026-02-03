@@ -102,17 +102,20 @@ export default function Notification() {
           ) : !notifications?.length ? (
             <div>No notifications</div>
           ) : (
-            notifications?.map((notification) => (
-              <div
-                key={notification.connectionString}
-                className="flex flex-col bg-gray-900 px-6 py-2 m-1 rounded-2xl"
-              >
-                <div className="text-2xl">
-                  {new Date(parseInt(notification.time)).toLocaleString()}
+            <>
+              <div className="p-3 flex justify-end">RESET</div>
+              {notifications?.map((notification) => (
+                <div
+                  key={notification.connectionString}
+                  className="flex flex-col bg-gray-900 px-6 py-2 m-1 rounded-2xl"
+                >
+                  <div className="text-2xl">
+                    {new Date(parseInt(notification.time)).toLocaleString()}
+                  </div>
+                  <div className="text-gray-300">{notification.message}</div>
                 </div>
-                <div className="text-gray-300">{notification.message}</div>
-              </div>
-            ))
+              ))}
+            </>
           )}
         </>
       )}
