@@ -22,34 +22,40 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     const connectionString = localStorage.getItem("__nx_connection_string__");
+    alert(connectionString);
     if (connectionString) {
-      (async () => {
-        setLoading(true);
-        setError(null);
-        try {
-          const messagesFetched = await (
-            await fetch(
-              `/api/notifications/getNotifications?connectionString=${connectionString}`,
-            )
-          ).json();
-          setNotifications(messagesFetched.messages);
+      if (connectionString !== "configure") {
+        (async () => {
+          setLoading(true);
+          setError(null);
+          try {
+            const messagesFetched = await (
+              await fetch(
+                `/api/notifications/getNotifications?connectionString=${connectionString}`,
+              )
+            ).json();
+            setNotifications(messagesFetched.messages);
 
-          // socket = io(`${window.location.origin.toString()}:${PORT}`);
-          // alert(window.location.origin.toString());
-          // socket.on("message", (notif: Notification) => {
-          //   alert("socket event 'messae' dropped");
-          //   setNotifications((prev: Notification[]): Notification[] => [
-          //     ...prev,
-          //     notif,
-          //   ]);
-          // });
-        } catch (err) {
-          console.error("Error: ", err);
-          setError("Couldn't fetch notifications");
-        } finally {
-          setLoading(false);
-        }
-      })();
+            // socket = io(`${window.location.origin.toString()}:${PORT}`);
+            // alert(window.location.origin.toString());
+            // socket.on("message", (notif: Notification) => {
+            //   alert("socket event 'messae' dropped");
+            //   setNotifications((prev: Notification[]): Notification[] => [
+            //     ...prev,
+            //     notif,
+            //   ]);
+            // });
+          } catch (err) {
+            console.error("Error: ", err);
+            setError("Couldn't fetch notifications");
+          } finally {
+            setLoading(false);
+          }
+        })();
+      } else {
+        setNotConfigured(true);
+        setLoading(false);
+      }
     } else {
       setNotConfigured(true);
       setLoading(false);
