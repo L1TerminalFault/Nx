@@ -57,7 +57,7 @@ export default function Notification() {
   }, []);
 
   function generateCode() {
-    return `${Math.random() * 100000}-${Math.random() * 100000}`;
+    return `${(Math.random() * 100000).toFixed(0)}-${(Math.random() * 100000).toFixed(0)}`;
   }
 
   const [code, setCode] = useState<string>(generateCode());
