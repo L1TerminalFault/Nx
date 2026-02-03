@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema({
-  userId: String,
-  message: String,
-  time: String,
-});
+const messageSchema = new mongoose.Schema(
+  {
+    connectionString: String,
+    message: String,
+    time: String,
+  },
+  { collection: "notifications" },
+);
 
 export const Message =
   mongoose.models.Message || mongoose.model("Message", messageSchema);
@@ -15,15 +18,15 @@ await (async () => {
 })();
 
 export const addMessage = async ({
-  userId,
+  connectionString,
   message,
   time,
 }: {
-  userId: string;
+  connectionString: string;
   message: string;
   time: string;
 }) => {
-  const messageObj = new Message({ userId, message, time });
+  const messageObj = new Message({ connectionString, message, time });
   try {
     await messageObj.save();
   } catch (error) {
