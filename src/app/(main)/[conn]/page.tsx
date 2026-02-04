@@ -18,6 +18,7 @@ export default function Notification() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [notConfigured, setNotConfigured] = useState(false);
+  const router = useRouter();
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const lastSegment = segments[segments.length - 1];
@@ -25,6 +26,7 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     const connectionString = localStorage.getItem("__nx_connection_string__");
+    if (lastSegment !== connectionString) router.replace(`/${connectionString}`)
     alert(connectionString);
     if (connectionString && lastSegment === connectionString) {
       (async () => {
@@ -65,7 +67,6 @@ export default function Notification() {
   }
 
   const [code, setCode] = useState<string>(generateCode());
-  const router = useRouter();
 
   return (
     <div>
