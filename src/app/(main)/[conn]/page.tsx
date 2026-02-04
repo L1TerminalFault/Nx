@@ -81,9 +81,10 @@ export default function Notification() {
             {code}
           </div>
           <div
+            className="p-3 bg-gray-800"
             onClick={() => {
               localStorage.setItem("__nx_connection_string__", code);
-              router.replace("/configure");
+              router.replace(`/${code}`);
             }}
           >
             Done
