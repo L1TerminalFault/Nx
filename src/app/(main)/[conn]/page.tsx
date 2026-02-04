@@ -26,7 +26,7 @@ export default function Notification() {
     // let socket: Socket;
     const connectionString = localStorage.getItem("__nx_connection_string__");
     alert(connectionString);
-    if (!connectionString || lastSegment !== connectionString) {
+    if (connectionString && lastSegment === connectionString) {
       (async () => {
         setLoading(true);
         setError(null);
