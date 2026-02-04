@@ -26,8 +26,6 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     const connectionString = localStorage.getItem("__nx_connection_string__");
-    if (lastSegment !== connectionString) router.replace(`/${connectionString}`)
-    alert(connectionString);
     if (connectionString && lastSegment === connectionString) {
       (async () => {
         setLoading(true);
@@ -56,6 +54,8 @@ export default function Notification() {
           setLoading(false);
         }
       })();
+    } else if (connectionString) {
+	return router.replace(`/${connectionString}`)
     } else {
       setNotConfigured(true);
       setLoading(false);
