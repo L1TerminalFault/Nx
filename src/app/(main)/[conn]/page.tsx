@@ -25,10 +25,12 @@ export default function Notification() {
   const segments = pathname.split("/").filter(Boolean);
   const lastSegment = segments[segments.length - 1];
   const [refresh, setRefresh] = useState(0);
+  // const [connectionString, setConnectionString] = useState<string | null>(localStorage.getItem("__nx_connection_string__"));
+  // const [lastConnectionString, setLastConnectionString] = useState<string | null>(localStorage.getItem("__nx_last_connection_string__"));
 
+  const connectionString = localStorage.getItem("__nx_connection_string__");
   useEffect(() => {
     // let socket: Socket;
-    const connectionString = localStorage.getItem("__nx_connection_string__");
     if (connectionString && lastSegment === connectionString) {
       (async () => {
         setLoading(true);
