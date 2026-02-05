@@ -71,16 +71,21 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
 
   return (
-    <div className="w-screen relative h-screen flex flex-col items-center pt-20 p-5 bg-gray-900/20 text-white">
-      <div className="w-full absolute top-0  p-4 text-xl border-transparent border-b-gray-900 border backdrop-blur-2xl bg-transparent">
-        NxServer
+    <div className="w-screen relative h-screen flex flex-col items-center pt-20 p-5 bg-gray-900/20 text-white transition-all">
+      <div className="w-full flex items-center justify-between absolute top-0 px-7 py-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-2xl bg-transparent">
+        <div>NxServer</div>
+        <div
+          className={`text-base text-gray-400 ${!lastSegment ? "hidden" : ""}`}
+        >
+          Session {lastSegment}
+        </div>
       </div>
       <div
         onClick={() => {
           localStorage.removeItem("__nx_connection_string__");
           router.replace("/configure");
         }}
-        className="fixed bottom-6 right-6 py-2 px-5 flex z-50 justify-end bg-white/10 hover:bg-white/15 backdrop-blur-2xl shadow-lg shadow-black rounded-full cursor-pointer"
+        className="fixed bottom-6 right-6 py-2 px-5 flex z-50 justify-end bg-white/5 transition-all hover:bg-white/10 backdrop-blur-2xl shadow-lg shadow-black rounded-full cursor-pointer"
       >
         RECONFIGURE
       </div>
@@ -99,13 +104,13 @@ export default function Notification() {
           </div>
           <div className="flex flex-row gap-12 p-4 justify-around">
             <div
-              className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10"
+              className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
               onClick={() => setCode(generateCode())}
             >
               New Code
             </div>
             <div
-              className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10"
+              className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
               onClick={() => {
                 localStorage.setItem("__nx_connection_string__", code);
                 router.replace(`/${code}`);
@@ -117,10 +122,6 @@ export default function Notification() {
         </div>
       ) : (
         <>
-          <div className="text-2xl w-full flex justify-center p-4">
-            Notifications from session &apos;
-            <span className="font-bold">{lastSegment}</span>&apos;
-          </div>
           {error ? (
             <div className="p-4 text-xl w-full flex justify-center">
               {error}
