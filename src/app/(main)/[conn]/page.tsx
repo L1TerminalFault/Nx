@@ -189,7 +189,7 @@ export default function Notification() {
                 {notifications?.map((notification) => (
                   <div
                     key={notification._id}
-                    className="flex justify-between gap-2 flex-row bg-[#ffffff08] p-1.5 rounded-2xl"
+                    className={`${Math.abs(Date.now() - parseInt(notification.time)) <= 60000 ? "bg-white/5 border border-gray-700/20" : "bg-[#ffffff08]"} flex justify-between gap-2 flex-row  p-1.5 rounded-2xl`}
                   >
                     <div className="flex flex-col gap-1.5">
                       <div className="font-bold px-3 pt-1">
@@ -202,13 +202,18 @@ export default function Notification() {
 
                     <div className="text-xs flex flex-col gap-1 p-1 justify-end">
                       <div className="text-gray-400">
-                        {new Date(parseInt(notification.time)).toLocaleString(
-                          "en-US",
-                          {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          },
+                        {Math.abs(Date.now() - parseInt(notification.time)) <=
+                        60000 ? (
+                          <span className="text-white font-bold">Just now</span>
+                        ) : (
+                          new Date(parseInt(notification.time)).toLocaleString(
+                            "en-US",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            },
+                          )
                         )}
                       </div>
                       <div className="text-gray-500 text-xs">
