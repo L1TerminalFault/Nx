@@ -24,6 +24,7 @@ export default function Notification() {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const lastSegment = segments[segments.length - 1];
+  const [refresh, setRefresh] = useState(0);
 
   useEffect(() => {
     // let socket: Socket;
@@ -62,7 +63,7 @@ export default function Notification() {
       setNotConfigured(true);
       setLoading(false);
     }
-  }, [lastSegment, router]);
+  }, [lastSegment, router, refresh]);
 
   function generateCode() {
     return `${(Math.random() * 10000).toFixed(0).padStart(4, "0")}-${(Math.random() * 10000).toFixed(0).padStart(4, "0")}`;
@@ -111,7 +112,7 @@ export default function Notification() {
             Reconfigure
           </div>
           <div
-            onClick={() => null}
+            onClick={() => setRefresh(Math.random())}
             className="fixed z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer"
           >
             Refresh
