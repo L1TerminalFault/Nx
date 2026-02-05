@@ -14,6 +14,7 @@ type Notification = {
 };
 
 // const PORT = 30000;
+const POLLING_INTERVAL = 60000;
 
 function generateCode() {
   return `${(Math.random() * 10000).toFixed(0).padStart(4, "0")}-${(Math.random() * 10000).toFixed(0).padStart(4, "0")}`;
@@ -84,7 +85,7 @@ export default function Notification() {
     const timer = setInterval(() => {
       if (refreshing || loading) return;
       refresh();
-    }, 60000);
+    }, POLLING_INTERVAL);
 
     return () => clearInterval(timer);
   }, [connectionString, refreshing, loading]);
@@ -165,8 +166,7 @@ export default function Notification() {
             Reconfigure
           </div>
           <div
-            // onClick={() => setTriggerRefresh((prev) => !prev)}
-            onClick={refresh}
+            onClick={() => setTriggerRefresh((prev) => !prev)}
             className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer`}
           >
             <FaCircleNotch
