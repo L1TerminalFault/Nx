@@ -81,7 +81,7 @@ export default function Notification() {
             NxServer <span className="text-sm text-gray-500">v1.0.0</span>
           </div>
           <div
-            className={`${lastSegment ? "" : "hidden"} p-1 bg-orange-600 rounded-full`}
+            className={`${lastSegment === "configure" ? "hidden" : ""} p-1 bg-orange-600 rounded-full`}
           />
         </div>
         <div
@@ -123,7 +123,7 @@ export default function Notification() {
           {lastConnectionString && lastConnectionString.length ? (
             <div className="text-center p-4 pt-8">
               {lastConnectionString === code ? (
-                <div>Using last session ${lastConnectionString} press Done</div>
+                <div>Using last session {lastConnectionString}</div>
               ) : (
                 <>
                   Use last session{"   "}
