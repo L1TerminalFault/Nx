@@ -74,7 +74,7 @@ export default function Notification() {
   );
 
   return (
-    <div className="w-screen relative h-screen flex flex-col items-center pt-20 pb-10 p-5 bg-gray-900/20 text-white transition-all">
+    <div className="w-screen relative h-screen flex flex-col items-center overflow-scroll pt-20 pb-10 p-5 bg-gray-900/20 text-white transition-all">
       <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-2xl bg-transparent">
         <div className="flex items-center gap-2">
           <div>
