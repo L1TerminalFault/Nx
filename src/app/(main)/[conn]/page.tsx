@@ -69,19 +69,30 @@ export default function Notification() {
   }
 
   const [code, setCode] = useState<string>(generateCode());
+  const lastConnectionString = localStorage.getItem(
+    "__nx_last_connection_string__",
+  );
 
   return (
     <div className="w-screen relative h-screen flex flex-col items-center pt-20 p-5 bg-gray-900/20 text-white transition-all">
-      <div className="w-full flex items-center justify-between absolute top-0 px-7 py-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-2xl bg-transparent">
+      <div className="w-full flex items-center justify-between absolute top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-2xl bg-transparent">
         <div>NxServer</div>
         <div
-          className={`text-base text-gray-400 ${!lastSegment ? "hidden" : ""}`}
+          className={`text-base text-gray-400 ${!lastSegment.length ? "hidden" : ""}`}
         >
           Session {lastSegment}
         </div>
       </div>
       <div
         onClick={() => {
+          const connectionString = localStorage.getItem(
+            "__nx_connection_string__",
+          );
+          if (connectionString && connectionString.length)
+            localStorage.setItem(
+              "__nx_last_connection_string__",
+              connectionString,
+            );
           localStorage.removeItem("__nx_connection_string__");
           router.replace("/configure");
         }}
@@ -102,6 +113,17 @@ export default function Notification() {
           <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
             {code}
           </div>
+          {lastConnectionString && lastConnectionString.length ? (
+            <div className="text-center p-4">
+              Use last session{" "}
+              <span
+                className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                onClick={() => setCode(lastConnectionString)}
+              >
+                {lastConnectionString}
+              </span>
+            </div>
+          ) : null}
           <div className="flex flex-row gap-12 p-4 justify-around">
             <div
               className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
