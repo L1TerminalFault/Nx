@@ -78,9 +78,9 @@ export default function Notification() {
       <div className="w-full flex items-center justify-between absolute top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-2xl bg-transparent">
         <div>NxServer</div>
         <div
-          className={`text-base text-gray-400 ${!lastSegment.length ? "hidden" : ""}`}
+          className={`text-base text-gray-400 ${!lastSegment ? "hidden" : ""}`}
         >
-          Session {lastSegment}
+          Session {lastSegment == "configure" ? "Not Configured" : lastSegment}
         </div>
       </div>
       <div
@@ -96,7 +96,7 @@ export default function Notification() {
           localStorage.removeItem("__nx_connection_string__");
           router.replace("/configure");
         }}
-        className="fixed bottom-6 right-6 py-2 px-5 flex z-50 justify-end bg-white/5 transition-all hover:bg-white/10 backdrop-blur-2xl shadow-lg shadow-black rounded-full cursor-pointer"
+        className={`${lastSegment == "configure" ? "hidden" : ""} fixed bottom-6 right-6 py-2 px-5 flex z-50 justify-end bg-white/5 transition-all hover:bg-white/10 backdrop-blur-2xl shadow-lg shadow-black rounded-full cursor-pointer`}
       >
         RECONFIGURE
       </div>
@@ -132,7 +132,7 @@ export default function Notification() {
               New Code
             </div>
             <div
-              className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+              className="py-2 px-5 rounded-full font-bold bg-white/5 hover:bg-white/10 transition-all"
               onClick={() => {
                 localStorage.setItem("__nx_connection_string__", code);
                 router.replace(`/${code}`);
