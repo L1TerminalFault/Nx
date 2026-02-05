@@ -117,115 +117,117 @@ export default function Notification() {
             Refresh
           </div>
         </div>
-        {loading ? (
-          <div className="w-full h-full flex items-center justify-center">
-            <FaCircleNotch className="animate-spin text-4xl" />
-          </div>
-        ) : notConfigured ? (
-          <div className="flex flex-col items-center p-5 pt-16">
-            <div className="text-2xl p-4">Configure</div>
-            <div className="text-center text-gray-400 p-2 pb-5">
-              Enter this code in the app, once you are done press
-              &quot;Done&quot;
+        <div className="w-full h-full">
+          {loading ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <FaCircleNotch className="animate-spin text-4xl" />
             </div>
-            <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
-              {code}
+          ) : notConfigured ? (
+            <div className="flex flex-col items-center p-5 pt-16">
+              <div className="text-2xl p-4">Configure</div>
+              <div className="text-center text-gray-400 p-2 pb-5">
+                Enter this code in the app, once you are done press
+                &quot;Done&quot;
+              </div>
+              <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
+                {code}
+              </div>
+              {lastConnectionString && lastConnectionString.length ? (
+                <div className="text-center p-4 pt-8">
+                  {lastConnectionString === code ? (
+                    <div>
+                      Using last session &quot;{lastConnectionString}&quot;
+                    </div>
+                  ) : (
+                    <>
+                      Use last session{"   "}
+                      <span
+                        className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                        onClick={() => setCode(lastConnectionString)}
+                      >
+                        {lastConnectionString}
+                      </span>
+                    </>
+                  )}
+                </div>
+              ) : null}
+              <div className="flex flex-row gap-12 p-4 justify-around">
+                <div
+                  className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                  onClick={() => setCode(generateCode())}
+                >
+                  New Code
+                </div>
+                <div
+                  className="py-2 px-5 rounded-full font-bold bg-white/5 hover:bg-white/10 transition-all"
+                  onClick={() => {
+                    localStorage.setItem("__nx_connection_string__", code);
+                    router.replace(`/${code}`);
+                  }}
+                >
+                  Done
+                </div>
+              </div>
             </div>
-            {lastConnectionString && lastConnectionString.length ? (
-              <div className="text-center p-4 pt-8">
-                {lastConnectionString === code ? (
-                  <div>
-                    Using last session &quot;{lastConnectionString}&quot;
-                  </div>
-                ) : (
-                  <>
-                    Use last session{"   "}
-                    <span
-                      className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
-                      onClick={() => setCode(lastConnectionString)}
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              {error ? (
+                <div className="p-4 text-xl w-full h-full flex justify-center">
+                  {error}
+                </div>
+              ) : !notifications ? (
+                <div className="p-4 text-xl w-full h-full flex justify-center">
+                  Could not load notifications
+                </div>
+              ) : !notifications?.length ? (
+                <div className="p-4 text-xl w-full h-full flex justify-center">
+                  No notifications
+                </div>
+              ) : (
+                <div className="w-full h-full flex flex-col gap-4 py-2">
+                  {notifications?.map((notification) => (
+                    <div
+                      key={notification._id}
+                      className="flex justify-between gap-2 flex-row bg-[#ffffff08] p-1.5 rounded-2xl"
                     >
-                      {lastConnectionString}
-                    </span>
-                  </>
-                )}
-              </div>
-            ) : null}
-            <div className="flex flex-row gap-12 p-4 justify-around">
-              <div
-                className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
-                onClick={() => setCode(generateCode())}
-              >
-                New Code
-              </div>
-              <div
-                className="py-2 px-5 rounded-full font-bold bg-white/5 hover:bg-white/10 transition-all"
-                onClick={() => {
-                  localStorage.setItem("__nx_connection_string__", code);
-                  router.replace(`/${code}`);
-                }}
-              >
-                Done
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            {error ? (
-              <div className="p-4 text-xl w-full h-full flex justify-center">
-                {error}
-              </div>
-            ) : !notifications ? (
-              <div className="p-4 text-xl w-full h-full flex justify-center">
-                Could not load notifications
-              </div>
-            ) : !notifications?.length ? (
-              <div className="p-4 text-xl w-full h-full flex justify-center">
-                No notifications
-              </div>
-            ) : (
-              <div className="w-full h-full flex flex-col gap-4 py-2">
-                {notifications?.map((notification) => (
-                  <div
-                    key={notification._id}
-                    className="flex justify-between gap-2 flex-row bg-[#ffffff08] p-1.5 rounded-2xl"
-                  >
-                    <div className="flex flex-col gap-1.5">
-                      <div className="font-bold px-3 pt-1">
-                        {notification.title}
+                      <div className="flex flex-col gap-1.5">
+                        <div className="font-bold px-3 pt-1">
+                          {notification.title}
+                        </div>
+                        <div className="text-sm text-gray-300 border-gray-700/15 rounded-2xl bg-[#ffffff08] border px-2.5 py-1.5">
+                          {notification.message}
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-300 border-gray-700/15 rounded-2xl bg-[#ffffff08] border px-2.5 py-1.5">
-                        {notification.message}
-                      </div>
-                    </div>
 
-                    <div className="text-xs flex flex-col gap-1 p-1 justify-end">
-                      <div className="text-gray-400">
-                        {new Date(parseInt(notification.time)).toLocaleString(
-                          "en-US",
-                          {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          },
-                        )}
-                      </div>
-                      <div className="text-gray-500 text-xs">
-                        {new Date(parseInt(notification.time)).toLocaleString(
-                          "en-US",
-                          {
-                            weekday: "short",
-                            month: "short",
-                            day: "numeric",
-                          },
-                        )}
+                      <div className="text-xs flex flex-col gap-1 p-1 justify-end">
+                        <div className="text-gray-400">
+                          {new Date(parseInt(notification.time)).toLocaleString(
+                            "en-US",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            },
+                          )}
+                        </div>
+                        <div className="text-gray-500 text-xs">
+                          {new Date(parseInt(notification.time)).toLocaleString(
+                            "en-US",
+                            {
+                              weekday: "short",
+                              month: "short",
+                              day: "numeric",
+                            },
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
