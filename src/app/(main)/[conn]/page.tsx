@@ -71,8 +71,8 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
 
   return (
-    <div className="w-screen relative //h-screen flex flex-col items-center pt-14 p-5 bg-gray-900/20 text-white">
-      <div className="w-full p-4 text-xl border-b-gray-800 border backdrop-blur-2xl bg-white/5">
+    <div className="w-screen relative h-screen flex flex-col items-center pt-18 p-5 bg-gray-900/20 text-white">
+      <div className="w-full absolute top-0  p-4 text-xl border-transparent border-b-gray-900 border backdrop-blur-2xl bg-white/5">
         NxServer
       </div>
       <div
@@ -80,7 +80,7 @@ export default function Notification() {
           localStorage.removeItem("__nx_connection_string__");
           router.replace("/configure");
         }}
-        className="absolute bottom-6 right-6 py-2 px-5 flex z-50 justify-end bg-white/15 backdrop-blur-2xl shadow-lg shadow-black rounded-full cursor-pointer"
+        className="fixed bottom-6 right-6 py-2 px-5 flex z-50 justify-end bg-white/15 backdrop-blur-2xl shadow-lg shadow-black rounded-full cursor-pointer"
       >
         RECONFIGURE
       </div>
@@ -91,21 +91,21 @@ export default function Notification() {
       ) : notConfigured ? (
         <div className="flex flex-col items-center p-5 pt-16">
           <div className="text-2xl p-4">Configure</div>
-          <div className="text-center text-gray-400 p-2">
+          <div className="text-center text-gray-400 p-2 pb-5">
             Enter this code in the app, once you are done press &apos;Done&apos;
           </div>
           <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
             {code}
           </div>
-          <div className="flex flex-row gap-4 p-4 justify-around">
+          <div className="flex flex-row gap-12 p-4 justify-around">
             <div
-              className="py-2 px-4 rounded-full bg-white/10"
+              className="py-2 px-4 rounded-full bg-white/5"
               onClick={() => setCode(generateCode())}
             >
               New Code
             </div>
             <div
-              className="py-2 px-4 rounded-full bg-white/10"
+              className="py-2 px-4 rounded-full bg-white/5"
               onClick={() => {
                 localStorage.setItem("__nx_connection_string__", code);
                 router.replace(`/${code}`);
