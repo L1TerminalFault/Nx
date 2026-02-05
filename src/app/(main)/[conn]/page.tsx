@@ -74,7 +74,7 @@ export default function Notification() {
   );
 
   return (
-    <div className="w-screen relative scrollbar-hidden overflow-scroll h-screen flex flex-col items-center pt-20 pb-10 p-3 bg-gray-900/20 text-white transition-all">
+    <div className="w-screen relative scrollbar-hidden overflow-scroll h-screen flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
       <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
         <div className="flex items-center gap-2">
           <div>
@@ -156,7 +156,7 @@ export default function Notification() {
           </div>
         </div>
       ) : (
-        <div className="w-full h-full py-10 flex items-center justify-center">
+        <div className="w-full h-full py-10 mb-10 flex items-center justify-center">
           {error ? (
             <div className="p-4 text-xl w-full flex justify-center">
               {error}
@@ -174,13 +174,13 @@ export default function Notification() {
               {notifications?.map((notification) => (
                 <div
                   key={notification._id}
-                  className="flex justify-between gap-2 flex-row bg-[#ffffff03] p-1.5 rounded-2xl"
+                  className="flex justify-between gap-2 flex-row bg-[#ffffff08] p-1.5 rounded-2xl"
                 >
                   <div className="flex flex-col gap-1.5">
                     <div className="font-bold px-3 pt-1">
                       {notification.title}
                     </div>
-                    <div className="text-sm text-gray-300 border-gray-700/20 rounded-2xl bg-[#ffffff06] border px-2.5 py-1.5">
+                    <div className="text-sm text-gray-300 border-gray-700/15 rounded-2xl bg-[#ffffff08] border px-2.5 py-1.5">
                       {notification.message}
                     </div>
                   </div>
