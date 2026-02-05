@@ -74,7 +74,7 @@ export default function Notification() {
   );
 
   return (
-    <div className="w-full relative scrollbar-hidden overflow-scroll h-full flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
+    <div className="w-full relative scrollbar-hidden overflow-scroll h-full py-20 flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
       <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
         <div className="flex items-center gap-2">
           <div>
@@ -90,22 +90,27 @@ export default function Notification() {
           Session {lastSegment == "configure" ? "Not Configured" : lastSegment}
         </div>
       </div>
-      <div
-        onClick={() => {
-          const connectionString = localStorage.getItem(
-            "__nx_connection_string__",
-          );
-          if (connectionString && connectionString.length)
-            localStorage.setItem(
-              "__nx_last_connection_string__",
-              connectionString,
+      <div className="w-full p-2 flex justify-end">
+        <div
+          onClick={() => {
+            const connectionString = localStorage.getItem(
+              "__nx_connection_string__",
             );
-          localStorage.removeItem("__nx_connection_string__");
-          router.replace("/configure");
-        }}
-        className={`${lastSegment == "configure" ? "hidden" : ""} fixed bottom-6 right-6 py-2 px-5 flex z-50 justify-end bg-white/5 transition-all hover:bg-white/10 backdrop-blur-2xl shadow-lg shadow-black rounded-full cursor-pointer`}
-      >
-        RECONFIGURE
+            if (connectionString && connectionString.length)
+              localStorage.setItem(
+                "__nx_last_connection_string__",
+                connectionString,
+              );
+            localStorage.removeItem("__nx_connection_string__");
+            router.replace("/configure");
+          }}
+          className={`${lastSegment == "configure" ? "hidden" : ""} py-1 px-2.5 flex z-50 justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
+        >
+          RECONFIGURE
+        </div>
+        <div className="fixed bottom-6 right-6 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-2 px-4 cursor-pointer">
+          Refresh
+        </div>
       </div>
       {loading ? (
         <div className="w-full h-[80%] flex items-center justify-center">
@@ -209,6 +214,7 @@ export default function Notification() {
                   </div>
                 </div>
               ))}
+              <div className="p-18"></div>
             </div>
           )}
         </div>
