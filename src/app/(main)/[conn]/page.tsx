@@ -65,7 +65,7 @@ export default function Notification() {
   }, [lastSegment, router]);
 
   function generateCode() {
-    return `${(Math.random() * 10000).toFixed(0)}-${(Math.random() * 10000).toFixed(0)}`;
+    return `${(Math.random() * 10000).toFixed(0).padStart(4, "0")}-${(Math.random() * 10000).toFixed(0).padStart(4, "0")}`;
   }
 
   const [code, setCode] = useState<string>(generateCode());
