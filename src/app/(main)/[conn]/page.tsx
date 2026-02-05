@@ -156,7 +156,7 @@ export default function Notification() {
           </div>
         </div>
       ) : (
-        <>
+        <div className="w-full h-full flex items-center justify-center">
           {error ? (
             <div className="p-4 text-xl w-full flex justify-center">
               {error}
@@ -211,7 +211,7 @@ export default function Notification() {
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
