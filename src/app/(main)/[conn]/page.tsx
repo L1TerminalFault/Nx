@@ -77,7 +77,7 @@ export default function Notification() {
           localStorage.removeItem("__nx_connection_string__");
           router.replace("/configure");
         }}
-        className="absolute bottom-14 right-14 py-3 px-5 flex z-50 justify-end bg-white/5 backdrop-blur-2xl shadow-lg shadow-black rounded-2xl cursor-pointer"
+        className="absolute bottom-14 right-14 py-3 px-5 flex z-50 justify-end bg-white/10 backdrop-blur-2xl shadow-lg shadow-black rounded-2xl cursor-pointer"
       >
         RECONFIGURE
       </div>
@@ -112,13 +112,15 @@ export default function Notification() {
             <span className="font-bold">{lastSegment}</span>&apos;
           </div>
           {error ? (
-            <div className="text-xl w-full flex justify-center">{error}</div>
+            <div className="p-4 text-xl w-full flex justify-center">
+              {error}
+            </div>
           ) : !notifications ? (
-            <div className="text-xl w-full flex justify-center">
+            <div className="p-4 text-xl w-full flex justify-center">
               Could not load notifications
             </div>
           ) : !notifications?.length ? (
-            <div className="text-xl w-full flex justify-center">
+            <div className="p-4 text-xl w-full flex justify-center">
               No notifications
             </div>
           ) : (
