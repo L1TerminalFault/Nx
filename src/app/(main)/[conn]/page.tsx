@@ -74,8 +74,8 @@ export default function Notification() {
   );
 
   return (
-    <div className="w-screen relative h-screen flex flex-col items-center overflow-scroll pt-20 pb-10 p-5 bg-gray-900/20 text-white transition-all">
-      <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
+    <div className="w-screen relative h-screen flex flex-col items-center scrollbar-hidden overflow-scroll pt-20 pb-10 p-5 bg-gray-900/20 text-white transition-all">
+      <div className="w-full h-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
         <div className="flex items-center gap-2">
           <div>
             NxServer <span className="text-sm text-gray-500">v1.0.0</span>
@@ -174,18 +174,18 @@ export default function Notification() {
               {notifications?.map((notification) => (
                 <div
                   key={notification._id}
-                  className="flex justify-between flex-row bg-white/5 px-6 py-2 rounded-2xl"
+                  className="flex justify-between gap-2 flex-row bg-[#ffffff03] p-1 rounded-2xl"
                 >
                   <div className="flex flex-col gap-2">
-                    <div className="text-xl font-bold">
+                    <div className="font-bold px-3 pt-1">
                       {notification.title}
                     </div>
-                    <div className="text-gray-300 max-w-11/12">
+                    <div className="text-sm text-gray-300 border-gray-700 rounded-2xl bg-[#ffffff06] border p-0.5">
                       {notification.message}
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2 justify-end">
+                  <div className="text-xs flex flex-col gap-1 justify-end">
                     <div className="text-gray-400">
                       {new Date(parseInt(notification.time)).toLocaleString(
                         "en-US",
@@ -196,7 +196,7 @@ export default function Notification() {
                         },
                       )}
                     </div>
-                    <div className="text-gray-500 text-sm">
+                    <div className="text-gray-500 text-xs">
                       {new Date(parseInt(notification.time)).toLocaleString(
                         "en-US",
                         {
