@@ -30,7 +30,6 @@ export default function Notification() {
   const segments = pathname.split("/").filter(Boolean);
   const lastSegment = segments[segments.length - 1];
   const [refreshing, setRefreshing] = useState(false);
-  const [triggerRefresh, setTriggerRefresh] = useState(false);
   const [code, setCode] = useState<string>(generateCode());
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
@@ -48,26 +47,21 @@ export default function Notification() {
     );
   }, []);
 
-  useEffect(() => {
-    const refresh = async () => {
-      if (refreshing || loading) return;
-      setRefreshing(true);
-      try {
-        const messagesFetched = await (
-          await fetch(
-            `/api/notifications/getNotifications?connectionString=${connectionString}`,
-          )
-        ).json();
-        if (messagesFetched.messages)
-          setNotifications(messagesFetched.messages);
-      } catch {
-      } finally {
-        setRefreshing(false);
-      }
-    };
-
-    refresh();
-  }, [triggerRefresh, connectionString, refreshing, loading]);
+  const refresh = async () => {
+    if (refreshing || loading) return;
+    setRefreshing(true);
+    try {
+      const messagesFetched = await (
+        await fetch(
+          `/api/notifications/getNotifications?connectionString=${connectionString}`,
+        )
+      ).json();
+      if (messagesFetched.messages) setNotifications(messagesFetched.messages);
+    } catch {
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     const refresh = async () => {
@@ -166,7 +160,7 @@ export default function Notification() {
             Reconfigure
           </div>
           <div
-            onClick={() => setTriggerRefresh((prev) => !prev)}
+            onClick={refresh}
             className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer`}
           >
             <FaCircleNotch
