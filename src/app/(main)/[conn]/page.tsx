@@ -114,8 +114,8 @@ export default function Notification() {
             {code}
           </div>
           {lastConnectionString && lastConnectionString.length ? (
-            <div className="text-center p-4">
-              Use last session{" "}
+            <div className="text-center p-4 pt-8">
+              Use last session{"   "}
               <span
                 className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
                 onClick={() => setCode(lastConnectionString)}
