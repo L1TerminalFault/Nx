@@ -75,7 +75,7 @@ export default function Notification() {
 
   return (
     <div className="min-h-screen min-w-screen">
-      <div className="w-full scrollbar-hidden overflow-scroll h-full py-20 flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
+      <div className="w-full scrollbar-hidden overflow-scroll h-full py-18 flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
         <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
           <div className="flex items-center gap-2">
             <div>
@@ -118,7 +118,7 @@ export default function Notification() {
           </div>
         </div>
         {loading ? (
-          <div className="w-full h-[80%] flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-center">
             <FaCircleNotch className="animate-spin text-4xl" />
           </div>
         ) : notConfigured ? (
@@ -171,19 +171,19 @@ export default function Notification() {
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             {error ? (
-              <div className="p-4 text-xl w-full flex justify-center">
+              <div className="p-4 text-xl w-full h-full flex justify-center">
                 {error}
               </div>
             ) : !notifications ? (
-              <div className="p-4 text-xl w-full flex justify-center">
+              <div className="p-4 text-xl w-full h-full flex justify-center">
                 Could not load notifications
               </div>
             ) : !notifications?.length ? (
-              <div className="p-4 text-xl w-full flex justify-center">
+              <div className="p-4 text-xl w-full h-full flex justify-center">
                 No notifications
               </div>
             ) : (
-              <div className="w-full h-full py-18 flex flex-col gap-4">
+              <div className="w-full h-full flex flex-col gap-4">
                 {notifications?.map((notification) => (
                   <div
                     key={notification._id}
@@ -222,7 +222,6 @@ export default function Notification() {
                     </div>
                   </div>
                 ))}
-                <div className="p-18 bg-red-500"></div>
               </div>
             )}
           </div>
