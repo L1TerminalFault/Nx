@@ -78,9 +78,11 @@ export default function Notification() {
       <div className="w-full flex items-center justify-between absolute top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-2xl bg-transparent">
         <div className="flex items-center gap-2">
           <div>
-            NxServer <span className="text-sm text-gray-700">v1.0.0</span>
+            NxServer <span className="text-sm text-gray-500">v1.0.0</span>
           </div>
-          <div className={`${lastSegment ? "" : "hidden"} p-3 bg-orange-600`} />
+          <div
+            className={`${lastSegment ? "" : "hidden"} p-1 bg-orange-600 rounded-full`}
+          />
         </div>
         <div
           className={`text-base text-gray-400 ${!lastSegment ? "hidden" : ""}`}
@@ -121,7 +123,7 @@ export default function Notification() {
           {lastConnectionString && lastConnectionString.length ? (
             <div className="text-center p-4 pt-8">
               {lastConnectionString === code ? (
-                <div>Using last session ${lastConnectionString}</div>
+                <div>Using last session ${lastConnectionString} press Done</div>
               ) : (
                 <>
                   Use last session{"   "}
