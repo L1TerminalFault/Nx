@@ -187,9 +187,7 @@ export default function Notification() {
             {lastConnectionString && lastConnectionString.length ? (
               <div className="text-center p-4 pt-8">
                 {lastConnectionString === code ? (
-                  <div>
-                    Using last session &quot;{lastConnectionString}&quot;
-                  </div>
+                  <div>Using last session</div>
                 ) : (
                   <>
                     Use last session{"   "}
