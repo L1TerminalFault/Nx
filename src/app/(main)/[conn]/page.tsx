@@ -115,7 +115,7 @@ export default function Notification() {
         <div className="flex flex-col items-center p-5 pt-16">
           <div className="text-2xl p-4">Configure</div>
           <div className="text-center text-gray-400 p-2 pb-5">
-            Enter this code in the app, once you are done press &apos;Done&apos;
+            Enter this code in the app, once you are done press &quot;Done&quot;
           </div>
           <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
             {code}
@@ -123,7 +123,7 @@ export default function Notification() {
           {lastConnectionString && lastConnectionString.length ? (
             <div className="text-center p-4 pt-8">
               {lastConnectionString === code ? (
-                <div>Using last session {lastConnectionString}</div>
+                <div>Using last session &quot;{lastConnectionString}&quot;</div>
               ) : (
                 <>
                   Use last session{"   "}
@@ -170,7 +170,7 @@ export default function Notification() {
               No notifications
             </div>
           ) : (
-            <>
+            <div className="w-full flex flex-col gap-4">
               {notifications?.map((notification) => (
                 <div
                   key={notification._id}
@@ -183,7 +183,7 @@ export default function Notification() {
                     <div className="text-gray-300">{notification.message}</div>
                   </div>
 
-                  <div className="flex flex-col gap-4 justify-end">
+                  <div className="flex flex-col gap-3 justify-end">
                     <div className="text-gray-400">
                       {new Date(parseInt(notification.time)).toLocaleString(
                         "en-US",
@@ -207,7 +207,7 @@ export default function Notification() {
                   </div>
                 </div>
               ))}
-            </>
+            </div>
           )}
         </>
       )}
