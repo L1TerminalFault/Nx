@@ -15,6 +15,10 @@ type Notification = {
 
 // const PORT = 30000;
 
+function generateCode() {
+  return `${(Math.random() * 10000).toFixed(0).padStart(4, "0")}-${(Math.random() * 10000).toFixed(0).padStart(4, "0")}`;
+}
+
 export default function Notification() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,11 +28,47 @@ export default function Notification() {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
   const lastSegment = segments[segments.length - 1];
-  const [refresh, setRefresh] = useState(0);
-  // const [connectionString, setConnectionString] = useState<string | null>(localStorage.getItem("__nx_connection_string__"));
-  // const [lastConnectionString, setLastConnectionString] = useState<string | null>(localStorage.getItem("__nx_last_connection_string__"));
+  const [refreshing, setRefreshing] = useState(true);
+  const [code, setCode] = useState<string>(generateCode());
+  const [connectionString, setConnectionString] = useState<string | null>(
+    localStorage?.getItem("__nx_connection_string__") || null,
+  );
+  const [lastConnectionString, setLastConnectionString] = useState<
+    string | null
+  >(localStorage?.getItem("__nx_last_connection_string__") || null);
 
-  const connectionString = localStorage.getItem("__nx_connection_string__");
+  useEffect(() => {
+    setConnectionString(
+      localStorage?.getItem("__nx_connection_string__") || null,
+    );
+    setLastConnectionString(
+      localStorage?.getItem("__nx_last_connection_string__") || null,
+    );
+  }, []);
+
+  const refresh = async () => {
+    try {
+      // const messagesFetched = await (
+      //   await fetch(
+      //     `/api/notifications/getNotifications?connectionString=${connectionString}`,
+      //   )
+      // ).json();
+      setRefreshing(true);
+      setNotifications(
+        (
+          await (
+            await fetch(
+              `/api/notifications/getNotifications?connectionString=${connectionString}`,
+            )
+          ).json()
+        ).messages,
+      );
+    } catch {
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   useEffect(() => {
     // let socket: Socket;
     if (connectionString && lastSegment === connectionString) {
@@ -65,16 +105,7 @@ export default function Notification() {
       setNotConfigured(true);
       setLoading(false);
     }
-  }, [lastSegment, router, refresh]);
-
-  function generateCode() {
-    return `${(Math.random() * 10000).toFixed(0).padStart(4, "0")}-${(Math.random() * 10000).toFixed(0).padStart(4, "0")}`;
-  }
-
-  const [code, setCode] = useState<string>(generateCode());
-  const lastConnectionString = localStorage.getItem(
-    "__nx_last_connection_string__",
-  );
+  }, [connectionString, router, lastSegment]);
 
   return (
     <div className="min-h-screen min-w-screen bg-gray-900/10">
@@ -114,9 +145,12 @@ export default function Notification() {
             Reconfigure
           </div>
           <div
-            onClick={() => setRefresh(Math.random())}
-            className="fixed z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer"
+            onClick={() => refresh()}
+            className="fixed flex gap-1 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer"
           >
+            <FaCircleNotch
+              className={`${refreshing ? "animate-spin" : ""} text-sm`}
+            />
             Refresh
           </div>
         </div>
