@@ -76,7 +76,12 @@ export default function Notification() {
   return (
     <div className="w-screen relative h-screen flex flex-col items-center pt-20 p-5 bg-gray-900/20 text-white transition-all">
       <div className="w-full flex items-center justify-between absolute top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-2xl bg-transparent">
-        <div>NxServer</div>
+        <div className="flex items-center gap-2">
+          <div>
+            NxServer <span className="text-sm text-gray-700">v1.0.0</span>
+          </div>
+          <div className={`${lastSegment ? "" : "hidden"} p-3 bg-orange-600`} />
+        </div>
         <div
           className={`text-base text-gray-400 ${!lastSegment ? "hidden" : ""}`}
         >
@@ -115,13 +120,19 @@ export default function Notification() {
           </div>
           {lastConnectionString && lastConnectionString.length ? (
             <div className="text-center p-4 pt-8">
-              Use last session{"   "}
-              <span
-                className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
-                onClick={() => setCode(lastConnectionString)}
-              >
-                {lastConnectionString}
-              </span>
+              {lastConnectionString === code ? (
+                <div>Using last session ${lastConnectionString}</div>
+              ) : (
+                <>
+                  Use last session{"   "}
+                  <span
+                    className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                    onClick={() => setCode(lastConnectionString)}
+                  >
+                    {lastConnectionString}
+                  </span>
+                </>
+              )}
             </div>
           ) : null}
           <div className="flex flex-row gap-12 p-4 justify-around">
