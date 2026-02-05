@@ -74,151 +74,160 @@ export default function Notification() {
   );
 
   return (
-    <div className="w-full relative scrollbar-hidden overflow-scroll h-full py-20 flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
-      <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
-        <div className="flex items-center gap-2">
-          <div>
-            NxServer <span className="text-sm text-gray-500">v1.0.0</span>
+    <div className="min-h-screen min-w-screen">
+      <div className="w-full scrollbar-hidden overflow-scroll h-full py-20 flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
+        <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
+          <div className="flex items-center gap-2">
+            <div>
+              NxServer <span className="text-sm text-gray-500">v1.0.0</span>
+            </div>
+            <div
+              className={`${lastSegment === "configure" ? "hidden" : ""} p-1 bg-orange-600 rounded-full`}
+            ></div>
           </div>
           <div
-            className={`${lastSegment === "configure" ? "hidden" : ""} p-1 bg-orange-600 rounded-full`}
-          ></div>
+            className={`text-base text-gray-400 ${!lastSegment ? "hidden" : ""}`}
+          >
+            Session{" "}
+            {lastSegment == "configure" ? "Not Configured" : lastSegment}
+          </div>
         </div>
-        <div
-          className={`text-base text-gray-400 ${!lastSegment ? "hidden" : ""}`}
-        >
-          Session {lastSegment == "configure" ? "Not Configured" : lastSegment}
-        </div>
-      </div>
-      <div className="w-full p-2 flex justify-end">
-        <div
-          onClick={() => {
-            const connectionString = localStorage.getItem(
-              "__nx_connection_string__",
-            );
-            if (connectionString && connectionString.length)
-              localStorage.setItem(
-                "__nx_last_connection_string__",
-                connectionString,
+        <div className="w-full p-2 flex justify-end">
+          <div
+            onClick={() => {
+              const connectionString = localStorage.getItem(
+                "__nx_connection_string__",
               );
-            localStorage.removeItem("__nx_connection_string__");
-            router.replace("/configure");
-          }}
-          className={`${lastSegment == "configure" ? "hidden" : ""} py-1 px-2.5 flex z-50 justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
-        >
-          RECONFIGURE
-        </div>
-        <div className="fixed bottom-6 right-6 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-2 px-4 cursor-pointer">
-          Refresh
-        </div>
-      </div>
-      {loading ? (
-        <div className="w-full h-[80%] flex items-center justify-center">
-          <FaCircleNotch className="animate-spin text-4xl" />
-        </div>
-      ) : notConfigured ? (
-        <div className="flex flex-col items-center p-5 pt-16">
-          <div className="text-2xl p-4">Configure</div>
-          <div className="text-center text-gray-400 p-2 pb-5">
-            Enter this code in the app, once you are done press &quot;Done&quot;
+              if (connectionString && connectionString.length)
+                localStorage.setItem(
+                  "__nx_last_connection_string__",
+                  connectionString,
+                );
+              localStorage.removeItem("__nx_connection_string__");
+              router.replace("/configure");
+            }}
+            className={`${lastSegment == "configure" ? "hidden" : ""} py-1 px-2.5 flex z-50 justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
+          >
+            RECONFIGURE
           </div>
-          <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
-            {code}
+          <div
+            onClick={() => null}
+            className="fixed z-40 bottom-6 right-6 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-2 px-4 cursor-pointer"
+          >
+            Refresh
           </div>
-          {lastConnectionString && lastConnectionString.length ? (
-            <div className="text-center p-4 pt-8">
-              {lastConnectionString === code ? (
-                <div>Using last session &quot;{lastConnectionString}&quot;</div>
-              ) : (
-                <>
-                  Use last session{"   "}
-                  <span
-                    className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
-                    onClick={() => setCode(lastConnectionString)}
+        </div>
+        {loading ? (
+          <div className="w-full h-[80%] flex items-center justify-center">
+            <FaCircleNotch className="animate-spin text-4xl" />
+          </div>
+        ) : notConfigured ? (
+          <div className="flex flex-col items-center p-5 pt-16">
+            <div className="text-2xl p-4">Configure</div>
+            <div className="text-center text-gray-400 p-2 pb-5">
+              Enter this code in the app, once you are done press
+              &quot;Done&quot;
+            </div>
+            <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
+              {code}
+            </div>
+            {lastConnectionString && lastConnectionString.length ? (
+              <div className="text-center p-4 pt-8">
+                {lastConnectionString === code ? (
+                  <div>
+                    Using last session &quot;{lastConnectionString}&quot;
+                  </div>
+                ) : (
+                  <>
+                    Use last session{"   "}
+                    <span
+                      className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                      onClick={() => setCode(lastConnectionString)}
+                    >
+                      {lastConnectionString}
+                    </span>
+                  </>
+                )}
+              </div>
+            ) : null}
+            <div className="flex flex-row gap-12 p-4 justify-around">
+              <div
+                className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                onClick={() => setCode(generateCode())}
+              >
+                New Code
+              </div>
+              <div
+                className="py-2 px-5 rounded-full font-bold bg-white/5 hover:bg-white/10 transition-all"
+                onClick={() => {
+                  localStorage.setItem("__nx_connection_string__", code);
+                  router.replace(`/${code}`);
+                }}
+              >
+                Done
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            {error ? (
+              <div className="p-4 text-xl w-full flex justify-center">
+                {error}
+              </div>
+            ) : !notifications ? (
+              <div className="p-4 text-xl w-full flex justify-center">
+                Could not load notifications
+              </div>
+            ) : !notifications?.length ? (
+              <div className="p-4 text-xl w-full flex justify-center">
+                No notifications
+              </div>
+            ) : (
+              <div className="w-full h-full py-18 flex flex-col gap-4">
+                {notifications?.map((notification) => (
+                  <div
+                    key={notification._id}
+                    className="flex justify-between gap-2 flex-row bg-[#ffffff08] p-1.5 rounded-2xl"
                   >
-                    {lastConnectionString}
-                  </span>
-                </>
-              )}
-            </div>
-          ) : null}
-          <div className="flex flex-row gap-12 p-4 justify-around">
-            <div
-              className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
-              onClick={() => setCode(generateCode())}
-            >
-              New Code
-            </div>
-            <div
-              className="py-2 px-5 rounded-full font-bold bg-white/5 hover:bg-white/10 transition-all"
-              onClick={() => {
-                localStorage.setItem("__nx_connection_string__", code);
-                router.replace(`/${code}`);
-              }}
-            >
-              Done
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="w-full h-full flex items-center justify-center">
-          {error ? (
-            <div className="p-4 text-xl w-full flex justify-center">
-              {error}
-            </div>
-          ) : !notifications ? (
-            <div className="p-4 text-xl w-full flex justify-center">
-              Could not load notifications
-            </div>
-          ) : !notifications?.length ? (
-            <div className="p-4 text-xl w-full flex justify-center">
-              No notifications
-            </div>
-          ) : (
-            <div className="w-full h-full py-18 mb-96 flex flex-col gap-4">
-              {notifications?.map((notification) => (
-                <div
-                  key={notification._id}
-                  className="flex justify-between gap-2 flex-row bg-[#ffffff08] p-1.5 rounded-2xl"
-                >
-                  <div className="flex flex-col gap-1.5">
-                    <div className="font-bold px-3 pt-1">
-                      {notification.title}
+                    <div className="flex flex-col gap-1.5">
+                      <div className="font-bold px-3 pt-1">
+                        {notification.title}
+                      </div>
+                      <div className="text-sm text-gray-300 border-gray-700/15 rounded-2xl bg-[#ffffff08] border px-2.5 py-1.5">
+                        {notification.message}
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-300 border-gray-700/15 rounded-2xl bg-[#ffffff08] border px-2.5 py-1.5">
-                      {notification.message}
-                    </div>
-                  </div>
 
-                  <div className="text-xs flex flex-col gap-1 p-1 justify-end">
-                    <div className="text-gray-400">
-                      {new Date(parseInt(notification.time)).toLocaleString(
-                        "en-US",
-                        {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hour12: true,
-                        },
-                      )}
-                    </div>
-                    <div className="text-gray-500 text-xs">
-                      {new Date(parseInt(notification.time)).toLocaleString(
-                        "en-US",
-                        {
-                          weekday: "short",
-                          month: "short",
-                          day: "numeric",
-                        },
-                      )}
+                    <div className="text-xs flex flex-col gap-1 p-1 justify-end">
+                      <div className="text-gray-400">
+                        {new Date(parseInt(notification.time)).toLocaleString(
+                          "en-US",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          },
+                        )}
+                      </div>
+                      <div className="text-gray-500 text-xs">
+                        {new Date(parseInt(notification.time)).toLocaleString(
+                          "en-US",
+                          {
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
+                          },
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-              <div className="p-18"></div>
-            </div>
-          )}
-        </div>
-      )}
+                ))}
+                <div className="p-18 bg-red-500"></div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
