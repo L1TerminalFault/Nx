@@ -166,7 +166,11 @@ export default function Notification() {
           </div>
           <div
             // onClick={() => setTriggerRefresh((prev) => !prev)}
-            onClick={refresh}
+            onClick={() =>
+              alert(
+                "Auto-refreshes every 60 seconds, or you can refresh by reloading the page",
+              )
+            }
             className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer`}
           >
             <FaCircleNotch
