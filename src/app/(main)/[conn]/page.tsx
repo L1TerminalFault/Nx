@@ -71,13 +71,13 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
 
   return (
-    <div className="w-screen relative h-screen flex flex-col items-center p-5 bg-gray-900/30 text-white">
+    <div className="w-screen relative //h-screen flex flex-col items-center p-5 bg-gray-900/20 text-white">
       <div
         onClick={() => {
           localStorage.removeItem("__nx_connection_string__");
           router.replace("/configure");
         }}
-        className="absolute bottom-14 right-14 py-3 px-5 flex z-50 justify-end bg-white/10 backdrop-blur-2xl shadow-lg shadow-black rounded-2xl cursor-pointer"
+        className="absolute bottom-6 right-6 py-2 px-5 flex z-50 justify-end bg-white/15 backdrop-blur-2xl shadow-lg shadow-black rounded-full cursor-pointer"
       >
         RECONFIGURE
       </div>
@@ -87,23 +87,30 @@ export default function Notification() {
         </div>
       ) : notConfigured ? (
         <div className="flex flex-col items-center p-5 pt-16">
-          <div className="text-xl">Configure</div>
-          <div>
-            Enter this code in the app, once you are done hit &apos;Done&apos;
+          <div className="text-2xl p-4">Configure</div>
+          <div className="text-center text-gray-400 p-2">
+            Enter this code in the app, once you are done press &apos;Done&apos;
           </div>
-          <div className="text-3xl font-bold my-4 border border-gray-500 p-20 rounded-3xl">
+          <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
             {code}
           </div>
-          <div
-            className="p-3 bg-gray-800"
-            onClick={() => {
-              localStorage.setItem("__nx_connection_string__", code);
-              router.replace(`/${code}`);
-            }}
-          >
-            Done
+          <div className="flex flex-row gap-4 p-4 justify-around">
+            <div
+              className="py-2 px-4 rounded-full bg-white/10"
+              onClick={() => setCode(generateCode())}
+            >
+              New Code
+            </div>
+            <div
+              className="py-2 px-4 rounded-full bg-white/10"
+              onClick={() => {
+                localStorage.setItem("__nx_connection_string__", code);
+                router.replace(`/${code}`);
+              }}
+            >
+              Done
+            </div>
           </div>
-          <div onClick={() => setCode(generateCode())}>Regenerate</div>
         </div>
       ) : (
         <>
