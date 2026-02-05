@@ -62,7 +62,7 @@ export default function Notification() {
       setNotConfigured(true);
       setLoading(false);
     }
-  }, [lastSegment]);
+  }, [lastSegment, router]);
 
   function generateCode() {
     return `${(Math.random() * 10000).toFixed(0)}-${(Math.random() * 10000).toFixed(0)}`;
@@ -77,7 +77,7 @@ export default function Notification() {
           localStorage.removeItem("__nx_connection_string__");
           router.replace("/configure");
         }}
-        className="absolute bottom-14 right-14 py-3 px-5 flex z-50 justify-end bg-white/20 backdrop-blur-2xl shadow-lg shadow-black rounded-2xl cursor-pointer"
+        className="absolute bottom-14 right-14 py-3 px-5 flex z-50 justify-end bg-white/5 backdrop-blur-2xl shadow-lg shadow-black rounded-2xl cursor-pointer"
       >
         RECONFIGURE
       </div>
