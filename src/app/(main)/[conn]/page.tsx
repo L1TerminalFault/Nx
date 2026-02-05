@@ -117,7 +117,7 @@ export default function Notification() {
             Refresh
           </div>
         </div>
-        <div className="w-full h-screen">
+        <div className="w-full h-full">
           {loading ? (
             <div className="w-full h-full flex items-center justify-center">
               <FaCircleNotch className="animate-spin text-4xl" />
