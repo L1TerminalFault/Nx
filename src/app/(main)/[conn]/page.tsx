@@ -112,7 +112,7 @@ export default function Notification() {
           </div>
           <div
             onClick={() => null}
-            className="fixed z-40 bottom-6 right-6 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-2 px-4 cursor-pointer"
+            className="fixed z-50 bottom-6 right-6 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-2 px-4 cursor-pointer"
           >
             Refresh
           </div>
