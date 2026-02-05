@@ -82,7 +82,7 @@ export default function Notification() {
           </div>
           <div
             className={`${lastSegment === "configure" ? "hidden" : ""} p-1 bg-orange-600 rounded-full`}
-          />
+          ></div>
         </div>
         <div
           className={`text-base text-gray-400 ${!lastSegment ? "hidden" : ""}`}
@@ -156,7 +156,7 @@ export default function Notification() {
           </div>
         </div>
       ) : (
-        <div className="w-full h-full py-10 mb-10 flex items-center justify-center">
+        <div className="w-full h-full flex items-center justify-center">
           {error ? (
             <div className="p-4 text-xl w-full flex justify-center">
               {error}
@@ -170,7 +170,7 @@ export default function Notification() {
               No notifications
             </div>
           ) : (
-            <div className="w-full h-full flex flex-col gap-4">
+            <div className="w-full h-full py-18 mb-96 flex flex-col gap-4">
               {notifications?.map((notification) => (
                 <div
                   key={notification._id}
