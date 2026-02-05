@@ -174,18 +174,18 @@ export default function Notification() {
               {notifications?.map((notification) => (
                 <div
                   key={notification._id}
-                  className="flex justify-between gap-2 flex-row bg-[#ffffff03] p-1 rounded-2xl"
+                  className="flex justify-between gap-2 flex-row bg-[#ffffff03] p-1.5 rounded-2xl"
                 >
                   <div className="flex flex-col gap-2">
                     <div className="font-bold px-3 pt-1">
                       {notification.title}
                     </div>
-                    <div className="text-sm text-gray-300 border-gray-700 rounded-2xl bg-[#ffffff06] border p-0.5">
+                    <div className="text-sm text-gray-300 border-gray-700/20 rounded-2xl bg-[#ffffff06] border p-2">
                       {notification.message}
                     </div>
                   </div>
 
-                  <div className="text-xs flex flex-col gap-1 justify-end">
+                  <div className="text-xs flex flex-col gap-1 p-1 justify-end">
                     <div className="text-gray-400">
                       {new Date(parseInt(notification.time)).toLocaleString(
                         "en-US",
