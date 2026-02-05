@@ -14,7 +14,7 @@ type Notification = {
 };
 
 // const PORT = 30000;
-const POLLING_INTERVAL = 60000;
+const POLLING_INTERVAL = 15000;
 
 function generateCode() {
   return `${(Math.random() * 10000).toFixed(0).padStart(4, "0")}-${(Math.random() * 10000).toFixed(0).padStart(4, "0")}`;
