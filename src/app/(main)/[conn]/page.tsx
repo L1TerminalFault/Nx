@@ -120,7 +120,7 @@ export default function Notification() {
         </div>
         {/* <div className="w-full h-screen"> */}
         {loading ? (
-          <div className="w-full h-full flex-1 flex items-center justify-center">
+          <div className="w-full h-full p-10 flex-1 flex items-center justify-center">
             <FaCircleNotch className="animate-spin text-4xl" />
           </div>
         ) : notConfigured ? (
