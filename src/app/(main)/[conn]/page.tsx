@@ -170,7 +170,7 @@ export default function Notification() {
               No notifications
             </div>
           ) : (
-            <div className="w-full h-full overflow-y-scroll flex flex-col gap-4">
+            <div className="w-full h-full flex flex-col gap-4">
               {notifications?.map((notification) => (
                 <div
                   key={notification._id}
