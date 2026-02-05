@@ -64,7 +64,7 @@ export default function Notification() {
   };
 
   useEffect(() => {
-    const refresh = async () => {
+    const poll = async () => {
       try {
         const messagesFetched = await (
           await fetch(
@@ -78,7 +78,7 @@ export default function Notification() {
 
     const timer = setInterval(() => {
       if (refreshing || loading) return;
-      refresh();
+      poll();
     }, POLLING_INTERVAL);
 
     return () => clearInterval(timer);
