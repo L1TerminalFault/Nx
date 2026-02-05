@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const messageSchema = new mongoose.Schema(
   {
     connectionString: String,
+    title: String,
     message: String,
     time: String,
   },
@@ -19,14 +20,16 @@ await (async () => {
 
 export const addMessage = async ({
   connectionString,
+  title,
   message,
   time,
 }: {
   connectionString: string;
+  title: string;
   message: string;
   time: string;
 }) => {
-  const messageObj = new Message({ connectionString, message, time });
+  const messageObj = new Message({ connectionString, title, message, time });
   try {
     await messageObj.save();
   } catch (error) {

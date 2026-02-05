@@ -2,11 +2,13 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FaCircleNotch } from "react-icons/fa";
 // import { io, Socket } from "socket.io-client";
 
 type Notification = {
   _id: string;
   connectionString: string;
+  title: string;
   message: string;
   time: string;
 };
@@ -55,7 +57,7 @@ export default function Notification() {
         }
       })();
     } else if (connectionString) {
-	return router.replace(`/${connectionString}`)
+      return router.replace(`/${connectionString}`);
     } else {
       setNotConfigured(true);
       setLoading(false);
@@ -69,9 +71,20 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
 
   return (
-    <div>
+    <div className="w-screen relative h-screen flex flex-col items-center p-5 bg-gray-900 text-white">
+      <div
+        onClick={() => {
+          localStorage.removeItem("__nx_connection_string__");
+          router.replace("/configure");
+        }}
+        className="absolute bottom-14 right-14 py-3 px-5 flex z-50 justify-end w-full bg-gray-800 shadow shadow-black rounded-2xl cursor-pointer"
+      >
+        RECONFIGURE
+      </div>
       {loading ? (
-        <div>Loading</div>
+        <div className="w-full h-[80%] flex items-center justify-center">
+          <FaCircleNotch className="animate-spin text-4xl" />
+        </div>
       ) : notConfigured ? (
         <div className="flex flex-col items-center p-5 pt-16">
           <div className="text-xl">Configure</div>
@@ -94,33 +107,56 @@ export default function Notification() {
         </div>
       ) : (
         <>
-          <div className="text-xl">Notifications</div>
+          <div className="text-2xl w-full flex justify-around">
+            Notifications from session &apos;
+            <span className="font-bold">{lastSegment}</span>&apos;
+          </div>
           {error ? (
-            <div>{error}</div>
+            <div className="text-xl w-full flex justify-around">{error}</div>
           ) : !notifications ? (
-            <div>Could not load notifications</div>
+            <div className="text-xl w-full flex justify-around">
+              Could not load notifications
+            </div>
           ) : !notifications?.length ? (
-            <div>No notifications</div>
+            <div className="text-xl w-full flex justify-around">
+              No notifications
+            </div>
           ) : (
             <>
-              <div
-                onClick={() => {
-                  localStorage.removeItem("__nx_connection_string__");
-                  router.replace("/configure");
-                }}
-                className="p-3 flex justify-end"
-              >
-                RESET
-              </div>
               {notifications?.map((notification) => (
                 <div
-                  key={notification.connectionString}
-                  className="flex flex-col bg-gray-900 px-6 py-2 m-1 rounded-2xl"
+                  key={notification._id}
+                  className="flex flex-row bg-gray-900 px-6 py-2 rounded-2xl"
                 >
-                  <div className="text-2xl">
-                    {new Date(parseInt(notification.time)).toLocaleString()}
+                  <div className="flex flex-col gap-3">
+                    <div className="text-xl font-bold">
+                      {notification.title}
+                    </div>
+                    <div className="text-gray-300">{notification.message}</div>
                   </div>
-                  <div className="text-gray-300">{notification.message}</div>
+
+                  <div className="flex flex-col gap-4 justify-end">
+                    <div className="text-gray-400">
+                      {new Date(parseInt(notification.time)).toLocaleString(
+                        "en-US",
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        },
+                      )}
+                    </div>
+                    <div className="text-gray-500 text-sm">
+                      {new Date(parseInt(notification.time)).toLocaleString(
+                        "en-US",
+                        {
+                          weekday: "short",
+                          month: "short",
+                          day: "numeric",
+                        },
+                      )}
+                    </div>
+                  </div>
                 </div>
               ))}
             </>

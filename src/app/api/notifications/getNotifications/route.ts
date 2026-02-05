@@ -7,7 +7,9 @@ export async function GET(request: Request) {
   // console.log("Socket connected: ", io);
   const connectionString = request.url.split("?connectionString=")[1];
 
-  const messages = await Message.find({ connectionString });
+  const messages = await Message.find({ connectionString }, null, {
+    sort: { time: -1 },
+  }).lean();
   console.log("Messages pulled: ", messages);
   return Response.json({ status: "success", messages });
 }
