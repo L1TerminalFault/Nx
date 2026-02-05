@@ -49,6 +49,7 @@ export default function Notification() {
 
   useEffect(() => {
     const refresh = async () => {
+      if (refreshing || loading) return;
       try {
         const messagesFetched = await (
           await fetch(
@@ -64,13 +65,29 @@ export default function Notification() {
       }
     };
 
+    refresh();
+  }, [triggerRefresh, connectionString, refreshing, loading]);
+
+  useEffect(() => {
+    const refresh = async () => {
+      try {
+        const messagesFetched = await (
+          await fetch(
+            `/api/notifications/getNotifications?connectionString=${connectionString}`,
+          )
+        ).json();
+        if (messagesFetched.messages)
+          setNotifications(messagesFetched.messages);
+      } catch {}
+    };
+
     const timer = setInterval(() => {
-      if (refreshing) return;
+      if (refreshing || loading) return;
       refresh();
     }, 60000);
 
     return () => clearInterval(timer);
-  }, [connectionString, triggerRefresh, refreshing]);
+  }, [connectionString, refreshing, loading]);
 
   useEffect(() => {
     // let socket: Socket;
@@ -149,7 +166,7 @@ export default function Notification() {
           </div>
           <div
             onClick={() => setTriggerRefresh((prev) => !prev)}
-            className="fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 pl-2 cursor-pointer"
+            className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer`}
           >
             <FaCircleNotch
               className={`${refreshing ? "animate-spin" : ""} text-sm`}
