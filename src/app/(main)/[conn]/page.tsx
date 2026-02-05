@@ -71,13 +71,13 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
 
   return (
-    <div className="w-screen relative h-screen flex flex-col items-center p-5 bg-gray-900 text-white">
+    <div className="w-screen relative h-screen flex flex-col items-center p-5 bg-gray-900/30 text-white">
       <div
         onClick={() => {
           localStorage.removeItem("__nx_connection_string__");
           router.replace("/configure");
         }}
-        className="absolute bottom-14 right-14 py-3 px-5 flex z-50 justify-end w-full bg-gray-800 shadow shadow-black rounded-2xl cursor-pointer"
+        className="absolute bottom-14 right-14 py-3 px-5 flex z-50 justify-end bg-white/20 backdrop-blur-2xl shadow-lg shadow-black rounded-2xl cursor-pointer"
       >
         RECONFIGURE
       </div>
@@ -107,18 +107,18 @@ export default function Notification() {
         </div>
       ) : (
         <>
-          <div className="text-2xl w-full flex justify-around">
+          <div className="text-2xl w-full flex justify-center p-4">
             Notifications from session &apos;
             <span className="font-bold">{lastSegment}</span>&apos;
           </div>
           {error ? (
-            <div className="text-xl w-full flex justify-around">{error}</div>
+            <div className="text-xl w-full flex justify-center">{error}</div>
           ) : !notifications ? (
-            <div className="text-xl w-full flex justify-around">
+            <div className="text-xl w-full flex justify-center">
               Could not load notifications
             </div>
           ) : !notifications?.length ? (
-            <div className="text-xl w-full flex justify-around">
+            <div className="text-xl w-full flex justify-center">
               No notifications
             </div>
           ) : (
