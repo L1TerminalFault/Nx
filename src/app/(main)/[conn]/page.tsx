@@ -75,7 +75,7 @@ export default function Notification() {
 
   return (
     <div className="min-h-screen min-w-screen">
-      <div className="w-full scrollbar-hidden overflow-scroll h-full py-18 flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
+      <div className="w-full scrollbar-hidden overflow-scroll h-full py-16 flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
         <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
           <div className="flex items-center gap-2">
             <div>
@@ -106,13 +106,13 @@ export default function Notification() {
               localStorage.removeItem("__nx_connection_string__");
               router.replace("/configure");
             }}
-            className={`${lastSegment == "configure" ? "hidden" : ""} py-1 px-2.5 flex justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
+            className={`${lastSegment == "configure" ? "hidden" : ""} py-1.5 px-3 flex justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
           >
             RECONFIGURE
           </div>
           <div
             onClick={() => null}
-            className="fixed z-50 bottom-6 right-6 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-2 px-4 cursor-pointer"
+            className="fixed z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer"
           >
             Refresh
           </div>
@@ -183,7 +183,7 @@ export default function Notification() {
                 No notifications
               </div>
             ) : (
-              <div className="w-full h-full flex flex-col gap-4">
+              <div className="w-full h-full flex flex-col gap-4 py-2">
                 {notifications?.map((notification) => (
                   <div
                     key={notification._id}
