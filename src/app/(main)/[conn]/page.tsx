@@ -71,7 +71,10 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
 
   return (
-    <div className="w-screen relative //h-screen flex flex-col items-center p-5 bg-gray-900/20 text-white">
+    <div className="w-screen relative //h-screen flex flex-col items-center pt-14 p-5 bg-gray-900/20 text-white">
+      <div className="w-full p-4 text-xl border-b-gray-800 border backdrop-blur-2xl bg-white/5">
+        NxServer
+      </div>
       <div
         onClick={() => {
           localStorage.removeItem("__nx_connection_string__");
