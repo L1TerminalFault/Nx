@@ -106,7 +106,7 @@ export default function Notification() {
               localStorage.removeItem("__nx_connection_string__");
               router.replace("/configure");
             }}
-            className={`${lastSegment == "configure" ? "hidden" : ""} py-1 px-2.5 flex z-50 justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
+            className={`${lastSegment == "configure" ? "hidden" : ""} py-1 px-2.5 flex justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
           >
             RECONFIGURE
           </div>
