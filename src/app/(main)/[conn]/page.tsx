@@ -74,8 +74,8 @@ export default function Notification() {
   );
 
   return (
-    <div className="min-h-screen min-w-screen">
-      <div className="w-full scrollbar-hidden overflow-scroll h-full py-16 flex flex-col items-center p-3 bg-gray-900/20 text-white transition-all">
+    <div className="min-h-screen min-w-screen bg-gray-900/10">
+      <div className="w-full scrollbar-hidden overflow-scroll h-full py-16 flex flex-col items-center p-3 bg-gray-900/10 text-white transition-all">
         <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
           <div className="flex items-center gap-2">
             <div>
@@ -108,7 +108,7 @@ export default function Notification() {
             }}
             className={`${lastSegment == "configure" ? "hidden" : ""} py-1.5 px-3 flex justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
           >
-            RECONFIGURE
+            Reconfigure
           </div>
           <div
             onClick={() => null}
@@ -119,11 +119,11 @@ export default function Notification() {
         </div>
         {/* <div className="w-full h-screen"> */}
         {loading ? (
-          <div className="w-full h-screen flex-1 flex items-center justify-center">
+          <div className="w-full h-full flex-1 flex items-center justify-center">
             <FaCircleNotch className="animate-spin text-4xl" />
           </div>
         ) : notConfigured ? (
-          <div className="flex flex-col h-scree items-center p-5 pt-16">
+          <div className="flex flex-col items-center p-5 pt-16">
             <div className="text-2xl p-4">Configure</div>
             <div className="text-center text-gray-400 p-2 pb-5">
               Enter this code in the app, once you are done press
@@ -172,15 +172,15 @@ export default function Notification() {
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             {error ? (
-              <div className="p-4 text-xl w-full h-screen flex justify-center">
+              <div className="p-4 text-xl w-full h-full flex justify-center">
                 {error}
               </div>
             ) : !notifications ? (
-              <div className="p-4 text-xl w-full h-screen flex justify-center">
+              <div className="p-4 text-xl w-full h-full flex justify-center">
                 Could not load notifications
               </div>
             ) : !notifications?.length ? (
-              <div className="p-4 text-xl w-full h-screen flex justify-center">
+              <div className="p-4 text-xl w-full h-full flex justify-center">
                 No notifications
               </div>
             ) : (
