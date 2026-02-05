@@ -47,28 +47,31 @@ export default function Notification() {
     );
   }, []);
 
-  const refresh = async () => {
-    if (refreshing || loading) return;
-    try {
-      const messagesFetched = await (
-        await fetch(
-          `/api/notifications/getNotifications?connectionString=${connectionString}`,
-        )
-      ).json();
-      setRefreshing(true);
-      if (messagesFetched.messages) setNotifications(messagesFetched.messages);
-    } catch {
-    } finally {
-      setRefreshing(false);
-    }
-  };
-  // useEffect(() => {
-  //
-  //   refresh();
-  // }, [triggerRefresh, connectionString, refreshing, loading]);
+  useEffect(() => {
+    const refresh = async () => {
+      console.log("Manual refreshing...");
+      if (refreshing || loading) return;
+      try {
+        const messagesFetched = await (
+          await fetch(
+            `/api/notifications/getNotifications?connectionString=${connectionString}`,
+          )
+        ).json();
+        setRefreshing(true);
+        if (messagesFetched.messages)
+          setNotifications(messagesFetched.messages);
+      } catch {
+      } finally {
+        setRefreshing(false);
+      }
+    };
+
+    refresh();
+  }, [triggerRefresh, connectionString, refreshing, loading]);
 
   useEffect(() => {
     const refresh = async () => {
+      console.log("Auto refreshing...");
       try {
         const messagesFetched = await (
           await fetch(
