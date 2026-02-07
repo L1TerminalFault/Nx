@@ -155,13 +155,13 @@ export default function Notification() {
               localStorage.removeItem("__nx_connection_string__");
               router.replace("/configure");
             }}
-            className={`${lastSegment == "configure" ? "hidden" : ""} py-1.5 px-3 flex justify-end bg-white/5 transition-all hover:bg-white/10 rounded-full cursor-pointer text-sm`}
+            className={`${lastSegment == "configure" ? "hidden" : ""} py-1.5 px-3 flex justify-end bg-white/10 transition-all hover:bg-white/15 rounded-full cursor-pointer text-sm`}
           >
             Reconfigure
           </div>
           <div
             onClick={refresh}
-            className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/5 hover:bg-white/10 transition-all py-1.5 px-4 cursor-pointer`}
+            className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/10 hover:bg-white/15 transition-all py-1.5 px-4 cursor-pointer`}
           >
             <FaCircleNotch
               className={`${refreshing ? "animate-spin" : ""} text-sm`}
@@ -192,7 +192,7 @@ export default function Notification() {
                   <>
                     Use last session{"   "}
                     <span
-                      className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                      className="py-2 px-4 rounded-full bg-white/10 hover:bg-white/15 transition-all"
                       onClick={() => setCode(lastConnectionString)}
                     >
                       {lastConnectionString}
@@ -203,13 +203,13 @@ export default function Notification() {
             ) : null}
             <div className="flex flex-row gap-12 p-4 justify-around">
               <div
-                className="py-2 px-4 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                className="py-2 px-4 rounded-full bg-white/10 hover:bg-white/15 transition-all"
                 onClick={() => setCode(generateCode())}
               >
                 New Code
               </div>
               <div
-                className="py-2 px-5 rounded-full font-bold bg-white/5 hover:bg-white/10 transition-all"
+                className="py-2 px-5 rounded-full font-bold bg-white/10 hover:bg-white/15 transition-all"
                 onClick={() => {
                   localStorage.setItem("__nx_connection_string__", code);
                   router.replace(`/${code}`);
@@ -238,18 +238,18 @@ export default function Notification() {
                 {notifications?.map((notification) => (
                   <div
                     key={notification._id}
-                    className={`${Math.abs(Date.now() - parseInt(notification.time)) <= 60000 ? "bg-white/5 border border-gray-700/20" : "bg-[#ffffff08]"} flex justify-between gap-2 flex-row  p-1.5 rounded-2xl`}
+                    className={`${Math.abs(Date.now() - parseInt(notification.time)) <= 60000 ? "bg-white/10 border border-gray-700/40" : "bg-[#ffffff0f]"} flex justify-between gap-2 flex-row  p-1.5 rounded-2xl`}
                   >
                     <div className="flex flex-col gap-1.5">
                       <div className="font-bold px-3 pt-1">
                         {notification.title}
                       </div>
-                      <div className="text-sm text-gray-300 border-gray-700/15 rounded-2xl bg-[#ffffff08] border px-2.5 py-1.5">
+                      <div className="text-sm text-gray-300 border-gray-700/30 rounded-2xl bg-[#ffffff0f] border px-2.5 py-1.5">
                         {notification.message}
                       </div>
                     </div>
 
-                    <div className="text-xs flex flex-col gap-1 p-1 justify-end">
+                    <div className="text-xs flex flex-col gap-1 p-1 justify-end text-nowrap">
                       <div className="text-gray-400">
                         {Math.abs(Date.now() - parseInt(notification.time)) <=
                         60000 ? (
