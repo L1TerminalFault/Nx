@@ -244,7 +244,7 @@ export default function Notification() {
                       <div className="font-bold px-3 pt-1">
                         {notification.title}
                       </div>
-                      <div className="text-sm text-gray-300 border-gray-700/45 rounded-2xl bg-[#ffffff0c] border px-2.5 py-1.5">
+                      <div className="text-sm text-gray-300 border-gray-700/45 rounded-2xl bg-[#ffffff0a] border px-2.5 py-1.5">
                         {notification.message}
                       </div>
                     </div>
