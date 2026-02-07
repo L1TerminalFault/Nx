@@ -238,13 +238,13 @@ export default function Notification() {
                 {notifications?.map((notification) => (
                   <div
                     key={notification._id}
-                    className={`${Math.abs(Date.now() - parseInt(notification.time)) <= 60000 ? "bg-white/10 border border-gray-700/40" : "bg-[#ffffff0f]"} flex justify-between gap-2 flex-row  p-1.5 rounded-2xl`}
+                    className={`${Math.abs(Date.now() - parseInt(notification.time)) <= 60000 ? "bg-white/10 border border-gray-700/60" : "bg-[#ffffff15]"} flex justify-between gap-2 flex-row  p-1.5 rounded-2xl`}
                   >
                     <div className="flex flex-col gap-1.5">
                       <div className="font-bold px-3 pt-1">
                         {notification.title}
                       </div>
-                      <div className="text-sm text-gray-300 border-gray-700/30 rounded-2xl bg-[#ffffff0f] border px-2.5 py-1.5">
+                      <div className="text-sm text-gray-300 border-gray-700/45 rounded-2xl bg-[#ffffff0f] border px-2.5 py-1.5">
                         {notification.message}
                       </div>
                     </div>
