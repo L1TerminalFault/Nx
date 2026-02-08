@@ -3,6 +3,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaCircleNotch } from "react-icons/fa";
+import { QRCodeSVG } from "qrcode.react";
 // import { io, Socket } from "socket.io-client";
 
 type Notification = {
@@ -181,8 +182,14 @@ export default function Notification() {
               Enter this code in the app, once you are done press
               &quot;Done&quot;
             </div>
-            <div className="text-3xl font-bold border border-gray-500 px-20 py-16 rounded-4xl">
+            <div className="flex flex-col gap-5 text-3xl font-bold border border-gray-500 px-10 py-10 rounded-4xl">
               {code}
+              <QRCodeSVG
+                value={code}
+                size={200}
+                level="H"
+                includeMargin={true}
+              />
             </div>
             {lastConnectionString && lastConnectionString.length ? (
               <div className="text-center p-4 pt-8">
