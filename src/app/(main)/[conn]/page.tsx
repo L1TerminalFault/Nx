@@ -176,19 +176,19 @@ export default function Notification() {
             <FaCircleNotch className="animate-spin text-4xl" />
           </div>
         ) : notConfigured ? (
-          <div className="flex flex-col items-center p-5 pt-16">
+          <div className="flex flex-col items-center p-5 pt-10">
             <div className="text-2xl p-4">Configure</div>
             <div className="text-center text-gray-400 p-2 pb-5">
               Enter this code in the app, once you are done press
               &quot;Done&quot;
             </div>
-            <div className="flex flex-col items-center justify-center gap-5 text-3xl font-bold border border-gray-500 px-10 py-10 rounded-4xl">
+            <div className="flex flex-col items-center justify-center gap-4 text-2xl font-bold border border-gray-500 px-10 py-7 rounded-4xl">
               {code}
               <QRCodeSVG
                 value={code}
                 size={200}
                 level="H"
-                className="rounded-3xl bg-white/10"
+                className="rounded-2xl p-2 bg-white/10"
               />
             </div>
             {lastConnectionString && lastConnectionString.length ? (
