@@ -182,13 +182,13 @@ export default function Notification() {
               Enter this code in the app, once you are done press
               &quot;Done&quot;
             </div>
-            <div className="flex flex-col gap-5 text-3xl font-bold border border-gray-500 px-10 py-10 rounded-4xl">
+            <div className="flex flex-col items-center justify-center gap-5 text-3xl font-bold border border-gray-500 px-10 py-10 rounded-4xl">
               {code}
               <QRCodeSVG
                 value={code}
                 size={200}
                 level="H"
-                includeMargin={true}
+                className="rounded-3xl bg-white/10"
               />
             </div>
             {lastConnectionString && lastConnectionString.length ? (
