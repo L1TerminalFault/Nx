@@ -176,7 +176,7 @@ export default function Notification() {
             <FaCircleNotch className="animate-spin text-4xl" />
           </div>
         ) : notConfigured ? (
-          <div className="flex flex-col items-center p-5 pt-7">
+          <div className="flex flex-col items-center p-5">
             <div className="text-2xl p-4">Configure</div>
             <div className="text-center text-gray-400 p-2 pb-5">
               Enter this code in the app, once you are done press
@@ -184,12 +184,12 @@ export default function Notification() {
             </div>
             <div className="flex flex-col items-center justify-center gap-4 text-2xl font-bold border border-gray-500 px-10 py-7 rounded-4xl">
               {code}
-              <div className="bg-white p-1 rounded-2xl">
+              <div className="bg-white p-0 rounded-2xl">
                 <QRCodeSVG value={code} size={200} level="H" className="p-2" />
               </div>
             </div>
             {lastConnectionString && lastConnectionString.length ? (
-              <div className="text-center p-4 pt-8">
+              <div className="text-center p-2 pt-6">
                 {lastConnectionString === code ? (
                   <div>Using last session</div>
                 ) : (
@@ -205,7 +205,7 @@ export default function Notification() {
                 )}
               </div>
             ) : null}
-            <div className="flex flex-row gap-12 p-4 justify-around">
+            <div className="flex flex-row gap-12 p-1 justify-around">
               <div
                 className="py-2 px-4 rounded-full bg-white/10 hover:bg-white/15 transition-all"
                 onClick={() => setCode(generateCode())}
