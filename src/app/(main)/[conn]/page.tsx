@@ -184,12 +184,14 @@ export default function Notification() {
             </div>
             <div className="flex flex-col items-center justify-center gap-4 text-2xl font-bold border border-gray-500 px-10 py-7 rounded-4xl">
               {code}
-              <QRCodeSVG
-                value={code}
-                size={200}
-                level="H"
-                className="rounded-2xl p-2 bg-white/10"
-              />
+              <div className="bg-white/10 p-2 rounded-2xl">
+                <QRCodeSVG
+                  value={code}
+                  size={200}
+                  level="H"
+                  className="p-2 bg-white"
+                />
+              </div>
             </div>
             {lastConnectionString && lastConnectionString.length ? (
               <div className="text-center p-4 pt-8">
