@@ -205,7 +205,7 @@ export default function Notification() {
                 )}
               </div>
             ) : null}
-            <div className="flex flex-row gap-12 p-1 justify-around">
+            <div className="flex flex-row gap-12 p-2 justify-around">
               <div
                 className="py-2 px-4 rounded-full bg-white/10 hover:bg-white/15 transition-all"
                 onClick={() => setCode(generateCode())}
