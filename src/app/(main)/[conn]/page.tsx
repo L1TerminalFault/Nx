@@ -33,7 +33,7 @@ export default function Notification() {
   const [refreshing, setRefreshing] = useState(false);
   const [code, setCode] = useState<string>(generateCode());
   const [configureManually, setConfigureManually] = useState<boolean>(false);
-  const [manualInput, setManualInput] = useState<string>("")
+  const [manualInput, setManualInput] = useState<string>("");
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
   );
@@ -87,10 +87,10 @@ export default function Notification() {
     return () => clearInterval(timer);
   }, [connectionString, refreshing, loading]);
 
-  const submit = (code : string) => {
+  const submit = (code: string) => {
     localStorage.setItem("__nx_connection_string__", code);
     router.replace(`/${code}`);
-  }
+  };
 
   useEffect(() => {
     // let socket: Socket;
@@ -190,15 +190,22 @@ export default function Notification() {
                 ? 'Enter the Connection String from the app and press "Done"'
                 : 'Enter this code in the app, once you are done press "Done"'}
             </div>
-            <div className="flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 px-10 py-7 rounded-4xl">
+            <div
+              className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
+            >
               {configureManually ? (
-                <input
-                  type="text"
-                  placeholder="Enter connection string"
-                  value={manualInput}
+                <form
+                  className="px-10 py-7 flex"
                   onSubmit={() => submit(manualInput)}
-                  onChange={(e) => setManualInput(e.target.value)}
-                ></input>
+                >
+                  <input
+                    type="text"
+                    className="outline-nonel border-nonel font-normal h-full w-full"
+                    placeholder="Enter connection string"
+                    value={manualInput}
+                    onChange={(e) => setManualInput(e.target.value)}
+                  ></input>
+                </form>
               ) : (
                 <>
                   {code}
@@ -214,14 +221,16 @@ export default function Notification() {
               )}
             </div>
             <div
-              className="py-2 px-4 text-sm rounded-full bg-white/10 hover:bg-white/15 transition-all"
+              className="py-2 px-4 mt-4 text-sm rounded-full bg-white/10 hover:bg-white/15 transition-all"
               onClick={() => setConfigureManually((prev) => !prev)}
             >
               {configureManually
                 ? "Configure New Session"
                 : "Configure Existing Session"}
             </div>
-            {!configureManually && lastConnectionString && lastConnectionString.length ? (
+            {!configureManually &&
+            lastConnectionString &&
+            lastConnectionString.length ? (
               <div className="text-center p-2 pt-6">
                 {lastConnectionString === code ? (
                   <div>Using last session</div>
@@ -247,7 +256,7 @@ export default function Notification() {
               </div>
               <div
                 className="py-2 px-5 rounded-full font-bold bg-white/10 hover:bg-white/15 transition-all"
-                onClick={() => submit(code)}
+                onClick={() => submit(configureManually ? manualInput : code)}
               >
                 Done
               </div>
