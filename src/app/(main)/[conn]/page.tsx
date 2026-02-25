@@ -91,7 +91,7 @@ export default function Notification() {
   const checkAndSubmit = (code: string) => {
     if (
       (code.length === 8 && !isNaN(Number(code))) ||
-      (code.length === 7 &&
+      (code.length === 9 &&
         !isNaN(Number(code.slice(0, 4))) &&
         !isNaN(Number(code.slice(5))) &&
         code.charAt(4) === "-")
