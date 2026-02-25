@@ -96,9 +96,12 @@ export default function Notification() {
         !isNaN(Number(code.slice(5))) &&
         code.charAt(4) === "-")
     ) {
+      let codeFixed;
       setInputError(0);
-      localStorage.setItem("__nx_connection_string__", code);
-      router.replace(`/${code}`);
+      if (code.includes("-")) codeFixed = code
+      else codeFixed = code.slice(0, 4) + "-" + code.slice(4)
+      localStorage.setItem("__nx_connection_string__", codeFixed);
+      router.replace(`/${codeFixed}`);
     } else {
       setInputError((prev) => prev + 1);
     }
