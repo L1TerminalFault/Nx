@@ -108,8 +108,10 @@ export default function Notification() {
     if (inputError != 1) {
       document.querySelector("#errorText")?.classList.add("reannounceError");
       setTimeout(() => {
-        document.querySelector("#errorText")?.classList.remove("reannounceError");
-      }, 400);
+        document
+          .querySelector("#errorText")
+          ?.classList.remove("reannounceError");
+      }, 300);
     }
   }, [inputError]);
 
@@ -246,7 +248,7 @@ export default function Notification() {
             </div>
             <div
               id="errorText"
-              className={`${inputError && configureManually ? "" : "hidden"} mt-1.5 px-12 text-red-500 text-xs`}
+              className={`${inputError && configureManually ? "" : "hidden"} mt-1.5 px-12 text-red-600 text-xs max-w-4/6`}
             >
               The code only contains 8 digits and optionally a hyphen in the
               middle e.g &quot;1234-5678&quot;

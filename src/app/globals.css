@@ -35,7 +35,7 @@ body {
 }
 
 .reannounceError {
-  animation: reannounceError 0.4s ease-in;
+  animation: reannounceError 0.3s ease-in;
 }
 
 @keyframes reannounceError {
@@ -43,7 +43,7 @@ body {
     opacity: 1;
   }
   50% {
-    opacity: 0;
+    opacity: 0.3;
   }
   100% {
     opacity: 1;
