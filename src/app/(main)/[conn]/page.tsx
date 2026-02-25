@@ -197,7 +197,7 @@ export default function Notification() {
                 <form className="flex" onSubmit={() => submit(manualInput)}>
                   <input
                     type="text"
-                    className="px-10 py-7 outline-nonel border-nonel font-normal h-full w-full"
+                    className="px-10 py-7 outline-nonel border-nonel font-normal h-full w-full rounded-4xl"
                     placeholder="Enter connection string"
                     value={manualInput}
                     onChange={(e) => setManualInput(e.target.value)}
