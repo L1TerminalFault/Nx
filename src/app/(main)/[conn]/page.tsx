@@ -194,13 +194,10 @@ export default function Notification() {
               className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
             >
               {configureManually ? (
-                <form
-                  className="px-10 py-7 flex"
-                  onSubmit={() => submit(manualInput)}
-                >
+                <form className="flex" onSubmit={() => submit(manualInput)}>
                   <input
                     type="text"
-                    className="outline-nonel border-nonel font-normal h-full w-full"
+                    className="px-10 py-7 outline-nonel border-nonel font-normal h-full w-full"
                     placeholder="Enter connection string"
                     value={manualInput}
                     onChange={(e) => setManualInput(e.target.value)}
