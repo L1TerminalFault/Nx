@@ -34,7 +34,7 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
   const [configureManually, setConfigureManually] = useState<boolean>(false);
   const [manualInput, setManualInput] = useState<string>("");
-  const [inputError, setInputError] = useState<string>("");
+  const [inputError, setInputError] = useState<number>(0);
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
   );
@@ -96,15 +96,20 @@ export default function Notification() {
         !isNaN(Number(code.slice(5))) &&
         code.charAt(4) === "-")
     ) {
-      setInputError("");
+      setInputError(0);
       localStorage.setItem("__nx_connection_string__", code);
       router.replace(`/${code}`);
     } else {
-      setInputError(
-        'The code only contains 8 digits and optionally a hyphen in the middle e.g "1234-5678"',
-      );
+      setInputError((prev) => prev + 1);
     }
   };
+
+  useEffect(() => {
+    document.querySelector("#errorText")?.classList.add("");
+    setTimeout(() => {
+      document.querySelector("#errorText")?.classList.remove("");
+    }, 1);
+  }, [inputError]);
 
   useEffect(() => {
     // let socket: Socket;
@@ -238,9 +243,11 @@ export default function Notification() {
               )}
             </div>
             <div
-              className={`${inputError.length ? "" : "hidden"} mt-1.5 px-12 text-red-500 text-xs`}
+              id="errorText"
+              className={`${inputError ? "" : "hidden"} mt-1.5 px-12 text-red-500 text-xs animate-pulse duration-75`}
             >
-              {inputError}
+              The code only contains 8 digits and optionally a hyphen in the
+              middle e.g &quot;1234-5678&quot;
             </div>
             <div
               className="py-2 px-4 mt-4 text-sm rounded-full bg-white/10 hover:bg-white/15 transition-all"
