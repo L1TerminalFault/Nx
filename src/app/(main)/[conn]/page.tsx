@@ -32,6 +32,8 @@ export default function Notification() {
   const lastSegment = segments[segments.length - 1];
   const [refreshing, setRefreshing] = useState(false);
   const [code, setCode] = useState<string>(generateCode());
+  const [configureManually, setConfigureManually] = useState<boolean>(false);
+  const [manualInput, setManualInput] = useState<string>("")
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
   );
@@ -84,6 +86,11 @@ export default function Notification() {
 
     return () => clearInterval(timer);
   }, [connectionString, refreshing, loading]);
+
+  const submit = (code : string) => {
+    localStorage.setItem("__nx_connection_string__", code);
+    router.replace(`/${code}`);
+  }
 
   useEffect(() => {
     // let socket: Socket;
@@ -179,16 +186,42 @@ export default function Notification() {
           <div className="flex flex-col items-center p-5">
             <div className="text-2xl p-4">Configure</div>
             <div className="text-center text-gray-400 p-2 pb-5">
-              Enter this code in the app, once you are done press
-              &quot;Done&quot;
+              {configureManually
+                ? 'Enter the Connection String from the app and press "Done"'
+                : 'Enter this code in the app, once you are done press "Done"'}
             </div>
-            <div className="flex flex-col items-center justify-center gap-4 text-2xl font-bold border border-gray-500 px-10 py-7 rounded-4xl">
-              {code}
-              <div className="bg-white p-0 rounded-2xl">
-                <QRCodeSVG value={code} size={200} level="H" className="p-2" />
-              </div>
+            <div className="flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 px-10 py-7 rounded-4xl">
+              {configureManually ? (
+                <input
+                  type="text"
+                  placeholder="Enter connection string"
+                  value={manualInput}
+                  onSubmit={() => submit(manualInput)}
+                  onChange={(e) => setManualInput(e.target.value)}
+                ></input>
+              ) : (
+                <>
+                  {code}
+                  <div className="bg-white p-0 rounded-2xl">
+                    <QRCodeSVG
+                      value={code}
+                      size={200}
+                      level="H"
+                      className="p-2"
+                    />
+                  </div>
+                </>
+              )}
             </div>
-            {lastConnectionString && lastConnectionString.length ? (
+            <div
+              className="py-2 px-4 text-sm rounded-full bg-white/10 hover:bg-white/15 transition-all"
+              onClick={() => setConfigureManually((prev) => !prev)}
+            >
+              {configureManually
+                ? "Configure New Session"
+                : "Configure Existing Session"}
+            </div>
+            {!configureManually && lastConnectionString && lastConnectionString.length ? (
               <div className="text-center p-2 pt-6">
                 {lastConnectionString === code ? (
                   <div>Using last session</div>
@@ -207,17 +240,14 @@ export default function Notification() {
             ) : null}
             <div className="flex flex-row gap-12 p-4 justify-around">
               <div
-                className="py-2 px-4 rounded-full bg-white/10 hover:bg-white/15 transition-all"
+                className={`${configureManually ? "hidden" : ""} py-2 px-4 rounded-full bg-white/10 hover:bg-white/15 transition-all`}
                 onClick={() => setCode(generateCode())}
               >
                 New Code
               </div>
               <div
                 className="py-2 px-5 rounded-full font-bold bg-white/10 hover:bg-white/15 transition-all"
-                onClick={() => {
-                  localStorage.setItem("__nx_connection_string__", code);
-                  router.replace(`/${code}`);
-                }}
+                onClick={() => submit(code)}
               >
                 Done
               </div>
