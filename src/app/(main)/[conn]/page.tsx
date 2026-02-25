@@ -207,23 +207,28 @@ export default function Notification() {
               className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
             >
               {configureManually ? (
-                <form
-                  className="flex flex-col"
-                  onSubmit={() => checkAndSubmit(manualInput)}
-                >
-                  <input
-                    type="text"
-                    className="px-10 py-7 outline-none border-none font-normal h-full w-full rounded-4xl"
-                    placeholder="Enter connection string"
-                    value={manualInput}
-                    onChange={(e) => setManualInput(e.target.value)}
-                  ></input>
+                <>
+                  <form
+                    className="flex flex-col"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      checkAndSubmit(manualInput);
+                    }}
+                  >
+                    <input
+                      type="text"
+                      className="px-10 py-7 outline-none border-none font-normal h-full w-full rounded-4xl"
+                      placeholder="Enter connection string"
+                      value={manualInput}
+                      onChange={(e) => setManualInput(e.target.value)}
+                    ></input>
+                  </form>
                   <div
-                    className={`${inputError.length ? "" : "hidden"} mt-3 text-red-600 text-xs`}
+                    className={`${inputError.length ? "" : "hidden"} mt-3 px-2 text-red-600 text-xs`}
                   >
                     {inputError}
                   </div>
-                </form>
+                </>
               ) : (
                 <>
                   {code}
