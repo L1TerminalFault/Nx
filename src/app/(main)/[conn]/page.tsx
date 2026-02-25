@@ -15,7 +15,7 @@ type Notification = {
 };
 
 // const PORT = 30000;
-const POLLING_INTERVAL = 15000;
+const POLLING_INTERVAL = 10000;
 
 function generateCode() {
   return `${(Math.random() * 10000).toFixed(0).padStart(4, "0")}-${(Math.random() * 10000).toFixed(0).padStart(4, "0")}`;
@@ -34,7 +34,7 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
   const [configureManually, setConfigureManually] = useState<boolean>(false);
   const [manualInput, setManualInput] = useState<string>("");
-  const [inputError, setInputError] = useState<string>("")
+  const [inputError, setInputError] = useState<string>("");
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
   );
@@ -89,13 +89,19 @@ export default function Notification() {
   }, [connectionString, refreshing, loading]);
 
   const checkAndSubmit = (code: string) => {
-    let valid = false
-    if ((code.length === 8 && code.split("").forEach((char) => Number(char))))
-
-    valid = true
-    if (valid) {
+    if (
+      (code.length === 8 && !isNaN(Number(code))) ||
+      (code.length === 7 &&
+        !isNaN(Number(code.slice(0, 4))) &&
+        !isNaN(Number(code.slice(5))) &&
+        code.charAt(4) === "-")
+    ) {
       localStorage.setItem("__nx_connection_string__", code);
       router.replace(`/${code}`);
+    } else {
+      setInputError(
+        'The code only contains 8 digits and optionally a hyphen in the middle e.g "1234-5678"',
+      );
     }
   };
 
@@ -201,7 +207,10 @@ export default function Notification() {
               className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
             >
               {configureManually ? (
-                <form className="flex flex-col" onSubmit={() => checkAndSubmit(manualInput)}>
+                <form
+                  className="flex flex-col"
+                  onSubmit={() => checkAndSubmit(manualInput)}
+                >
                   <input
                     type="text"
                     className="px-10 py-7 outline-none border-none font-normal h-full w-full rounded-4xl"
@@ -209,7 +218,11 @@ export default function Notification() {
                     value={manualInput}
                     onChange={(e) => setManualInput(e.target.value)}
                   ></input>
-                  <div className={`${inputError.length ? "" : "hidden"} mt-3 text-red-600 text-xs`}>{inputError}</div>
+                  <div
+                    className={`${inputError.length ? "" : "hidden"} mt-3 text-red-600 text-xs`}
+                  >
+                    {inputError}
+                  </div>
                 </form>
               ) : (
                 <>
@@ -261,7 +274,9 @@ export default function Notification() {
               </div>
               <div
                 className="py-2 px-5 rounded-full font-bold bg-white/10 hover:bg-white/15 transition-all"
-                onClick={() => checkAndSubmit(configureManually ? manualInput : code)}
+                onClick={() =>
+                  checkAndSubmit(configureManually ? manualInput : code)
+                }
               >
                 Done
               </div>
