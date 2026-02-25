@@ -105,9 +105,9 @@ export default function Notification() {
   };
 
   useEffect(() => {
-    document.querySelector("#errorText")?.classList.add("animate-pulse", "duration-10");
+    document.querySelector("#errorText")?.classList.add("reannounceError");
     setTimeout(() => {
-      document.querySelector("#errorText")?.classList.remove("animate-pulse", "duration-10");
+      document.querySelector("#errorText")?.classList.remove("reannounceError");
     }, 200);
   }, [inputError]);
 
@@ -244,7 +244,7 @@ export default function Notification() {
             </div>
             <div
               id="errorText"
-              className={`${inputError ? "" : "hidden"} mt-1.5 px-12 text-red-500 text-xs`}
+              className={`${inputError && configureManually ? "" : "hidden"} mt-1.5 px-12 text-red-500 text-xs`}
             >
               The code only contains 8 digits and optionally a hyphen in the
               middle e.g &quot;1234-5678&quot;
