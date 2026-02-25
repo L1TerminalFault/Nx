@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { FaCircleNotch } from "react-icons/fa";
 import { QRCodeSVG } from "qrcode.react";
 // import { io, Socket } from "socket.io-client";
@@ -35,6 +35,7 @@ export default function Notification() {
   const [configureManually, setConfigureManually] = useState<boolean>(false);
   const [manualInput, setManualInput] = useState<string>("");
   const [inputError, setInputError] = useState<number>(0);
+  const inputRef = useRef(null);
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
   );
@@ -66,6 +67,12 @@ export default function Notification() {
       setRefreshing(false);
     }
   };
+
+  useEffect(() => {
+    if (configureManually && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [configureManually])
 
   useEffect(() => {
     const poll = async () => {
@@ -229,6 +236,7 @@ export default function Notification() {
                 >
                   <input
                     type="text"
+		    ref={inputRef}
                     className="px-10 py-7 outline-none border-none font-normal h-full w-full rounded-4xl"
                     placeholder="Enter connection string"
                     value={manualInput}
