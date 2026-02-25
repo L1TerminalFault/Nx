@@ -104,12 +104,12 @@ export default function Notification() {
     }
   };
 
-  useEffect(() => {
-    document.querySelector("#errorText")?.classList.add("");
-    setTimeout(() => {
-      document.querySelector("#errorText")?.classList.remove("");
-    }, 1);
-  }, [inputError]);
+  // useEffect(() => {
+  //   document.querySelector("#errorText")?.classList.add("");
+  //   setTimeout(() => {
+  //     document.querySelector("#errorText")?.classList.remove("");
+  //   }, 1);
+  // }, [inputError]);
 
   useEffect(() => {
     // let socket: Socket;
