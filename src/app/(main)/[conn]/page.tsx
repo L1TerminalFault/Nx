@@ -96,6 +96,7 @@ export default function Notification() {
         !isNaN(Number(code.slice(5))) &&
         code.charAt(4) === "-")
     ) {
+      setInputError("");
       localStorage.setItem("__nx_connection_string__", code);
       router.replace(`/${code}`);
     } else {
@@ -237,7 +238,7 @@ export default function Notification() {
               )}
             </div>
             <div
-              className={`${inputError.length ? "" : "hidden"} mt-3 px-4 text-red-500 text-xs`}
+              className={`${inputError.length ? "" : "hidden"} mt-1.5 px-12 text-red-500 text-xs`}
             >
               {inputError}
             </div>
