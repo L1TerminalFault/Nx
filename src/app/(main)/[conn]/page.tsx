@@ -105,10 +105,12 @@ export default function Notification() {
   };
 
   useEffect(() => {
-    document.querySelector("#errorText")?.classList.add("reannounceError");
-    setTimeout(() => {
-      document.querySelector("#errorText")?.classList.remove("reannounceError");
-    }, 200);
+    if (inputError != 1) {
+      document.querySelector("#errorText")?.classList.add("reannounceError");
+      setTimeout(() => {
+        document.querySelector("#errorText")?.classList.remove("reannounceError");
+      }, 400);
+    }
   }, [inputError]);
 
   useEffect(() => {
