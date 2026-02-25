@@ -35,7 +35,7 @@ export default function Notification() {
   const [configureManually, setConfigureManually] = useState<boolean>(false);
   const [manualInput, setManualInput] = useState<string>("");
   const [inputError, setInputError] = useState<number>(0);
-  const inputRef = useRef(null);
+  // const inputRef = useRef(null);
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
   );
@@ -68,11 +68,11 @@ export default function Notification() {
     }
   };
 
-  useEffect(() => {
-    if (configureManually && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [configureManually])
+  // useEffect(() => {
+  //   if (configureManually && inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  // }, [configureManually])
 
   useEffect(() => {
     const poll = async () => {
@@ -105,8 +105,8 @@ export default function Notification() {
     ) {
       let codeFixed;
       setInputError(0);
-      if (code.includes("-")) codeFixed = code
-      else codeFixed = code.slice(0, 4) + "-" + code.slice(4)
+      if (code.includes("-")) codeFixed = code;
+      else codeFixed = code.slice(0, 4) + "-" + code.slice(4);
       localStorage.setItem("__nx_connection_string__", codeFixed);
       router.replace(`/${codeFixed}`);
     } else {
@@ -236,7 +236,7 @@ export default function Notification() {
                 >
                   <input
                     type="text"
-		    ref={inputRef}
+                    autoFocus
                     className="px-10 py-7 outline-none border-none font-normal h-full w-full rounded-4xl"
                     placeholder="Enter connection string"
                     value={manualInput}
