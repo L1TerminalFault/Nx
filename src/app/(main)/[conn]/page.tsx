@@ -34,6 +34,7 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
   const [configureManually, setConfigureManually] = useState<boolean>(false);
   const [manualInput, setManualInput] = useState<string>("");
+  const [inputError, setInputError] = useState<string>("")
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
   );
@@ -87,9 +88,15 @@ export default function Notification() {
     return () => clearInterval(timer);
   }, [connectionString, refreshing, loading]);
 
-  const submit = (code: string) => {
-    localStorage.setItem("__nx_connection_string__", code);
-    router.replace(`/${code}`);
+  const checkAndSubmit = (code: string) => {
+    let valid = false
+    if ((code.length === 8 && code.split("").forEach((char) => Number(char))))
+
+    valid = true
+    if (valid) {
+      localStorage.setItem("__nx_connection_string__", code);
+      router.replace(`/${code}`);
+    }
   };
 
   useEffect(() => {
@@ -194,14 +201,15 @@ export default function Notification() {
               className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
             >
               {configureManually ? (
-                <form className="flex" onSubmit={() => submit(manualInput)}>
+                <form className="flex flex-col" onSubmit={() => checkAndSubmit(manualInput)}>
                   <input
                     type="text"
-                    className="px-10 py-7 outline-nonel border-nonel font-normal h-full w-full rounded-4xl"
+                    className="px-10 py-7 outline-none border-none font-normal h-full w-full rounded-4xl"
                     placeholder="Enter connection string"
                     value={manualInput}
                     onChange={(e) => setManualInput(e.target.value)}
                   ></input>
+                  <div className={`${inputError.length ? "" : "hidden"} mt-3 text-red-600 text-xs`}>{inputError}</div>
                 </form>
               ) : (
                 <>
@@ -253,7 +261,7 @@ export default function Notification() {
               </div>
               <div
                 className="py-2 px-5 rounded-full font-bold bg-white/10 hover:bg-white/15 transition-all"
-                onClick={() => submit(configureManually ? manualInput : code)}
+                onClick={() => checkAndSubmit(configureManually ? manualInput : code)}
               >
                 Done
               </div>
