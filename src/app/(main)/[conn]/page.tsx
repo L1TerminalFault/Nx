@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { FaCircleNotch } from "react-icons/fa";
 import { QRCodeSVG } from "qrcode.react";
 // import { io, Socket } from "socket.io-client";
@@ -15,7 +15,7 @@ type Notification = {
 };
 
 // const PORT = 30000;
-const POLLING_INTERVAL = 15000;
+const POLLING_INTERVAL = 10000;
 
 function generateCode() {
   return `${(Math.random() * 10000).toFixed(0).padStart(4, "0")}-${(Math.random() * 10000).toFixed(0).padStart(4, "0")}`;
@@ -33,7 +33,9 @@ export default function Notification() {
   const [refreshing, setRefreshing] = useState(false);
   const [code, setCode] = useState<string>(generateCode());
   const [configureManually, setConfigureManually] = useState<boolean>(false);
-  const [manualInput, setManualInput] = useState<string>("")
+  const [manualInput, setManualInput] = useState<string>("");
+  const [inputError, setInputError] = useState<number>(0);
+  // const inputRef = useRef(null);
   const [connectionString, setConnectionString] = useState<string | null>(
     localStorage?.getItem("__nx_connection_string__") || null,
   );
@@ -66,6 +68,12 @@ export default function Notification() {
     }
   };
 
+  // useEffect(() => {
+  //   if (configureManually && inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  // }, [configureManually])
+
   useEffect(() => {
     const poll = async () => {
       try {
@@ -87,10 +95,35 @@ export default function Notification() {
     return () => clearInterval(timer);
   }, [connectionString, refreshing, loading]);
 
-  const submit = (code : string) => {
-    localStorage.setItem("__nx_connection_string__", code);
-    router.replace(`/${code}`);
-  }
+  const checkAndSubmit = (code: string) => {
+    if (
+      (code.length === 8 && !isNaN(Number(code))) ||
+      (code.length === 9 &&
+        !isNaN(Number(code.slice(0, 4))) &&
+        !isNaN(Number(code.slice(5))) &&
+        code.charAt(4) === "-")
+    ) {
+      let codeFixed;
+      setInputError(0);
+      if (code.includes("-")) codeFixed = code;
+      else codeFixed = code.slice(0, 4) + "-" + code.slice(4);
+      localStorage.setItem("__nx_connection_string__", codeFixed);
+      router.replace(`/${codeFixed}`);
+    } else {
+      setInputError((prev) => prev + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (inputError != 1) {
+      document.querySelector("#errorText")?.classList.add("reannounceError");
+      setTimeout(() => {
+        document
+          .querySelector("#errorText")
+          ?.classList.remove("reannounceError");
+      }, 400);
+    }
+  }, [inputError]);
 
   useEffect(() => {
     // let socket: Socket;
@@ -190,15 +223,26 @@ export default function Notification() {
                 ? 'Enter the Connection String from the app and press "Done"'
                 : 'Enter this code in the app, once you are done press "Done"'}
             </div>
-            <div className="flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 px-10 py-7 rounded-4xl">
+            <div
+              className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
+            >
               {configureManually ? (
-                <input
-                  type="text"
-                  placeholder="Enter connection string"
-                  value={manualInput}
-                  onSubmit={() => submit(manualInput)}
-                  onChange={(e) => setManualInput(e.target.value)}
-                ></input>
+                <form
+                  className="flex flex-col"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    checkAndSubmit(manualInput);
+                  }}
+                >
+                  <input
+                    type="text"
+                    autoFocus
+                    className="px-10 py-7 outline-none border-none font-normal h-full w-full rounded-4xl"
+                    placeholder="Enter connection string"
+                    value={manualInput}
+                    onChange={(e) => setManualInput(e.target.value)}
+                  ></input>
+                </form>
               ) : (
                 <>
                   {code}
@@ -214,14 +258,23 @@ export default function Notification() {
               )}
             </div>
             <div
-              className="py-2 px-4 text-sm rounded-full bg-white/10 hover:bg-white/15 transition-all"
+              id="errorText"
+              className={`${inputError && configureManually ? "" : "hidden"} mt-1.5 px-12 text-red-600 text-xs max-w-4/6`}
+            >
+              The code only contains 8 digits and optionally a hyphen in the
+              middle e.g &quot;1234-5678&quot;
+            </div>
+            <div
+              className="py-2 px-4 mt-4 text-sm rounded-full bg-white/10 hover:bg-white/15 transition-all"
               onClick={() => setConfigureManually((prev) => !prev)}
             >
               {configureManually
                 ? "Configure New Session"
                 : "Configure Existing Session"}
             </div>
-            {!configureManually && lastConnectionString && lastConnectionString.length ? (
+            {!configureManually &&
+            lastConnectionString &&
+            lastConnectionString.length ? (
               <div className="text-center p-2 pt-6">
                 {lastConnectionString === code ? (
                   <div>Using last session</div>
@@ -247,7 +300,9 @@ export default function Notification() {
               </div>
               <div
                 className="py-2 px-5 rounded-full font-bold bg-white/10 hover:bg-white/15 transition-all"
-                onClick={() => submit(code)}
+                onClick={() =>
+                  checkAndSubmit(configureManually ? manualInput : code)
+                }
               >
                 Done
               </div>

@@ -33,3 +33,25 @@ body {
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
+
+.reannounceError {
+  animation: reannounceError 0.4s ease-in;
+}
+
+@keyframes reannounceError {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
