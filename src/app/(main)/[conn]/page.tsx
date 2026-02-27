@@ -179,7 +179,7 @@ export default function Notification() {
         <div className="w-full flex items-center justify-between fixed top-0 p-4 text-xl border-transparent transition-all border-b-gray-700/30 border backdrop-blur-xl bg-transparent">
           <div className="flex items-center gap-2">
             <div>
-              NxServer <span className="text-sm text-gray-500">v1.0.0</span>
+              NxServer <span className="text-sm text-gray-500">v2.0.0</span>
             </div>
             <div
               className={`${lastSegment === "configure" ? "hidden" : ""} p-1 bg-orange-600 rounded-full`}
