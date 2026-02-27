@@ -9,6 +9,7 @@ export async function GET(request: Request) {
 
   const messages = await Message.find({ connectionString }, null, {
     sort: { time: -1 },
+    limit: 15,
   }).lean();
   console.log("Messages pulled: ", messages);
   return Response.json({ status: "success", messages });
