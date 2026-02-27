@@ -203,7 +203,9 @@ export default function Notification() {
             onClick={refresh}
             className={`${lastSegment === "configure" ? "hidden" : ""} select-none fixed flex items-center gap-2 z-20 backdrop-blur-xl bottom-6 right-5 text-lg rounded-full shadow-lg shadow-black/30 bg-white/10 hover:bg-white/15 transition-all py-1.5 px-4 cursor-pointer`}
           >
-            <FaCircleNotch className={`${refreshing ? "animate-spin" : ""}`} />
+            <FaCircleNotch
+              className={`${refreshing ? "animate-spin" : ""} rotate-45`}
+            />
             <div>Refresh</div>
           </div>
         </div>
