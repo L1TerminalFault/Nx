@@ -202,10 +202,10 @@ export default function Notification() {
           </div>
           <div
             onClick={refresh}
-            className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-sm rounded-full shadow-lg shadow-black/30 bg-white/10 hover:bg-white/15 transition-all py-1.5 px-4 cursor-pointer`}
+            className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 //text-sm rounded-full shadow-lg shadow-black/30 bg-white/10 hover:bg-white/15 transition-all py-1.5 px-4 cursor-pointer`}
           >
             <FaCircleNotch
-              className={`${refreshing ? "animate-spin" : ""} text-sm`}
+              className={`${refreshing ? "animate-spin" : ""} //text-sm`}
             />
             <div>Refresh</div>
           </div>
