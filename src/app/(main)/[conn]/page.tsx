@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCircleNotch } from "react-icons/fa";
 import { QRCodeSVG } from "qrcode.react";
 // import { io, Socket } from "socket.io-client";
@@ -114,6 +114,16 @@ export default function Notification() {
     }
   };
 
+  const reconfigure = () => {
+    const connectionString = localStorage.getItem("__nx_connection_string__");
+
+    if (connectionString && connectionString.length)
+      localStorage.setItem("__nx_last_connection_string__", connectionString);
+
+    localStorage.removeItem("__nx_connection_string__");
+    router.replace("/configure");
+  };
+
   useEffect(() => {
     if (inputError != 1) {
       document.querySelector("#errorText")?.classList.add("reannounceError");
@@ -184,29 +194,16 @@ export default function Notification() {
         </div>
         <div className="w-full p-2 flex justify-end">
           <div
-            onClick={() => {
-              const connectionString = localStorage.getItem(
-                "__nx_connection_string__",
-              );
-              if (connectionString && connectionString.length)
-                localStorage.setItem(
-                  "__nx_last_connection_string__",
-                  connectionString,
-                );
-              localStorage.removeItem("__nx_connection_string__");
-              router.replace("/configure");
-            }}
-            className={`${lastSegment == "configure" ? "hidden" : ""} py-1.5 px-3 flex justify-end bg-white/10 transition-all hover:bg-white/15 rounded-full cursor-pointer text-sm`}
+            onClick={reconfigure}
+            className={`${lastSegment == "configure" ? "hidden" : ""} select-none py-1.5 px-3 flex justify-end bg-white/10 transition-all hover:bg-white/15 rounded-full cursor-pointer text-sm`}
           >
             Reconfigure
           </div>
           <div
             onClick={refresh}
-            className={`${lastSegment === "configure" ? "hidden" : ""} fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 //text-sm rounded-full shadow-lg shadow-black/30 bg-white/10 hover:bg-white/15 transition-all py-1.5 px-4 cursor-pointer`}
+            className={`${lastSegment === "configure" ? "hidden" : ""} select-none fixed flex items-center gap-1.5 z-20 backdrop-blur-xl bottom-5 right-5 text-lg rounded-full shadow-lg shadow-black/30 bg-white/10 hover:bg-white/15 transition-all py-1.5 px-4 cursor-pointer`}
           >
-            <FaCircleNotch
-              className={`${refreshing ? "animate-spin" : ""} //text-sm`}
-            />
+            <FaCircleNotch className={`${refreshing ? "animate-spin" : ""}`} />
             <div>Refresh</div>
           </div>
         </div>
@@ -265,7 +262,7 @@ export default function Notification() {
               middle e.g &quot;1234-5678&quot;
             </div>
             <div
-              className="py-2 px-4 mt-4 text-sm rounded-full bg-white/10 hover:bg-white/15 transition-all"
+              className="py-2 px-4 select-none mt-4 text-sm rounded-full bg-white/10 hover:bg-white/15 transition-all"
               onClick={() => setConfigureManually((prev) => !prev)}
             >
               {configureManually
@@ -282,7 +279,7 @@ export default function Notification() {
                   <>
                     Use last session{"   "}
                     <span
-                      className="py-2 px-4 rounded-full bg-white/10 hover:bg-white/15 transition-all"
+                      className="py-2 px-4 select-none rounded-full bg-white/10 hover:bg-white/15 transition-all"
                       onClick={() => setCode(lastConnectionString)}
                     >
                       {lastConnectionString}
@@ -291,7 +288,7 @@ export default function Notification() {
                 )}
               </div>
             ) : null}
-            <div className="flex flex-row gap-12 p-4 justify-around">
+            <div className="flex flex-row gap-12 p-4 select-none justify-around">
               <div
                 className={`${configureManually ? "hidden" : ""} py-2 px-4 rounded-full bg-white/10 hover:bg-white/15 transition-all`}
                 onClick={() => setCode(generateCode())}
