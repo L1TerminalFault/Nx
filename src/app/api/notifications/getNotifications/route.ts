@@ -2,15 +2,22 @@ import { Message, AllowedClients } from "@/lib/db";
 
 // import { getIO } from "@/lib/socket";
 
+type NewUsers = {
+  connectionString: string;
+  allowedClients: string[];
+};
+
 export async function GET(request: Request) {
   // const io = getIO();
   // console.log("Socket connected: ", io);
   const userName = request.url.split("?userName=")[1].split("&")[0];
   const connectionString = request.url.split("&connectionString=")[1];
 
-  const allowedClients = await AllowedClients.find({ connectionString });
+  const allowedClients: NewUsers[] = await AllowedClients.find({
+    connectionString,
+  });
 
-  if (!allowedClients.includes(userName)) {
+  if (!allowedClients[0].allowedClients.includes(userName)) {
     console.log(
       `User ${userName} is not allowed to access messages from ${connectionString}. Reason, was not found in ${allowedClients}`,
     );
