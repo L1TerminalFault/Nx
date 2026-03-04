@@ -65,7 +65,7 @@ export default function Notification() {
       if (messagesFetched.status === "success")
         setNotifications(messagesFetched.messages);
       else {
-        setError(messagesFetched.error);
+        return setError(messagesFetched.error);
       }
     } catch {
     } finally {
@@ -92,7 +92,7 @@ export default function Notification() {
         if (messagesFetched.status === "success")
           setNotifications(messagesFetched.messages);
         else {
-          setError(messagesFetched.error);
+          return setError(messagesFetched.error);
         }
       } catch {}
     };
@@ -146,8 +146,8 @@ export default function Notification() {
       else codeFixed = code.slice(0, 4) + "-" + code.slice(4);
       localStorage.setItem("__nx_connection_string__", codeFixed);
       localStorage.setItem("__nx_user_name__", userNameInput);
-      router.replace(`/${codeFixed}`);
       setNotConfigured(false);
+      router.replace(`/${codeFixed}`);
     } else {
       setInputError((prev) => prev + 1);
     }
@@ -177,10 +177,9 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     if (connectionString && lastSegment === connectionString && userName) {
-      alert(`${error}, ${notConfigured}`);
       (async () => {
         setLoading(true);
-        setError(null);
+        // setError(null);
         try {
           const messagesFetched = await (
             await fetch(
