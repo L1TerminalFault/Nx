@@ -56,7 +56,7 @@ export default function Notification() {
 
   const refresh = async () => {
     if (refreshing || loading || error) return;
-    console.log("refreshing");
+    // console.log("refreshing");
     setRefreshing(true);
     try {
       const messagesFetched = await (
@@ -87,7 +87,7 @@ export default function Notification() {
       return () => {};
     }
 
-    console.log("polling");
+    // console.log("polling");
     const poll = async () => {
       try {
         const messagesFetched = await (
@@ -98,7 +98,7 @@ export default function Notification() {
         if (messagesFetched.status === "success")
           setNotifications(messagesFetched.messages);
         else {
-          console.log("in poll error");
+          // console.log("in poll error");
           return setError(messagesFetched.error);
         }
       } catch {}
@@ -123,13 +123,14 @@ export default function Notification() {
       // NOTE: false means unavailable
       return false;
 
-    console.log("available");
+    // console.log("available");
     // NOTE: returns true if the user name is not used
     return true;
   };
 
   const checkAndSubmit = async (code: string) => {
-    console.log("submitting");
+    setLoading(true);
+    // console.log("submitting");
     if (!userName) {
       if (!userNameInput.length) {
         setErrorOnUserName("User name required");
@@ -157,15 +158,16 @@ export default function Notification() {
       localStorage.setItem("__nx_user_name__", userNameInput);
       setNotConfigured(false);
 
-      console.log("routing after reconfigure");
+      // console.log("routing after reconfigure");
       router.replace(`/${codeFixed}`);
     } else {
       setInputError((prev) => prev + 1);
     }
+    setLoading(false);
   };
 
   const reconfigure = () => {
-    console.log("reconfiguring....");
+    // console.log("reconfiguring....");
     const connectionString = localStorage.getItem("__nx_connection_string__");
 
     if (connectionString && connectionString.length)
@@ -189,7 +191,7 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     if (connectionString && lastSegment === connectionString && userName) {
-      console.log("Fetching initial");
+      // console.log("Fetching initial");
       (async () => {
         setLoading(true);
         setError(null);
@@ -251,7 +253,8 @@ export default function Notification() {
             {lastSegment == "configure" ? "Not Configured" : lastSegment}
           </div>
         </div>
-        <div className="w-full p-2 flex justify-end">
+        <div className="w-full p-2 flex items-center justify-between">
+          <div className="text-gray-400 px-2">{userName}</div>
           <div
             onClick={reconfigure}
             className={`${lastSegment == "configure" ? "hidden" : ""} select-none py-1.5 px-3 flex justify-end bg-white/10 transition-all hover:bg-white/15 rounded-full cursor-pointer text-sm`}
@@ -281,7 +284,7 @@ export default function Notification() {
                 ? 'Enter the Connection String from the app and press "Done"'
                 : 'Enter this code in the app, once you are done press "Done"'}
             </div>
-            {true ? (
+            {!userName ? (
               <div className="flex flex-col py-4">
                 <input
                   type="text"
