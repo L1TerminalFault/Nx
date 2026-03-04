@@ -55,6 +55,7 @@ export default function Notification() {
 
   const refresh = async () => {
     if (refreshing || loading || error) return;
+    console.log("refreshing");
     setRefreshing(true);
     try {
       const messagesFetched = await (
@@ -82,6 +83,7 @@ export default function Notification() {
   useEffect(() => {
     if (error || !userName || loading) return () => {};
 
+    console.log("polling");
     const poll = async () => {
       try {
         const messagesFetched = await (
@@ -92,6 +94,7 @@ export default function Notification() {
         if (messagesFetched.status === "success")
           setNotifications(messagesFetched.messages);
         else {
+          console.log("in poll error");
           return setError(messagesFetched.error);
         }
       } catch {}
@@ -116,11 +119,13 @@ export default function Notification() {
       // NOTE: false means unavailable
       return false;
 
+    console.log("available");
     // NOTE: returns true if the user name is not used
     return true;
   };
 
   const checkAndSubmit = async (code: string) => {
+    console.log("submitting");
     if (!userName) {
       if (!userNameInput.length) {
         setErrorOnUserName("User name required");
@@ -147,6 +152,8 @@ export default function Notification() {
       localStorage.setItem("__nx_connection_string__", codeFixed);
       localStorage.setItem("__nx_user_name__", userNameInput);
       setNotConfigured(false);
+
+      console.log("routing after reconfigure");
       router.replace(`/${codeFixed}`);
     } else {
       setInputError((prev) => prev + 1);
@@ -154,6 +161,7 @@ export default function Notification() {
   };
 
   const reconfigure = () => {
+    console.log("reconfiguring....");
     const connectionString = localStorage.getItem("__nx_connection_string__");
 
     if (connectionString && connectionString.length)
@@ -177,9 +185,10 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     if (connectionString && lastSegment === connectionString && userName) {
+      console.log("Fetching initial");
       (async () => {
         setLoading(true);
-        // setError(null);
+        setError(null);
         try {
           const messagesFetched = await (
             await fetch(
@@ -189,6 +198,7 @@ export default function Notification() {
           if (messagesFetched.status === "success")
             setNotifications(messagesFetched.messages);
           else {
+            console.log(messagesFetched.error);
             setError(messagesFetched.error);
           }
 
