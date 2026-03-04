@@ -267,24 +267,24 @@ export default function Notification() {
                 ? 'Enter the Connection String from the app and press "Done"'
                 : 'Enter this code in the app, once you are done press "Done"'}
             </div>
-            {/* {true ? ( */}
-            {/*   <div className="flex flex-col py-4"> */}
-            {/*     <input */}
-            {/*       type="text" */}
-            {/*       autoFocus */}
-            {/*       className="px-6 py-4 outline-none border border-gray-500 font-normal text-lg h-full w-full rounded-2xl" */}
-            {/*       placeholder="Enter your username" */}
-            {/*       value={userNameInput} */}
-            {/*       onChange={(e) => setUserNameInput(e.target.value)} */}
-            {/*     ></input> */}
-            {/*     <div */}
-            {/*       id="errorText" */}
-            {/*       className={`${errorOnUserName ? "" : "opacity-0"} mt-1.5 px-2 text-red-600 text-xs max-w-4/6`} */}
-            {/*     > */}
-            {/*       {errorOnUserName} */}
-            {/*     </div> */}
-            {/*   </div> */}
-            {/* ) : null} */}
+            {true ? (
+              <div className="flex flex-col py-4">
+                <input
+                  type="text"
+                  autoFocus
+                  className="px-6 py-4 outline-none border border-gray-500 font-normal text-lg h-full w-full rounded-2xl"
+                  placeholder="Enter your username"
+                  value={userNameInput}
+                  onChange={(e) => setUserNameInput(e.target.value)}
+                ></input>
+                <div
+                  id="errorText"
+                  className={`${errorOnUserName ? "" : "opacity-0"} mt-1.5 px-2 text-red-600 text-xs max-w-4/6`}
+                >
+                  {errorOnUserName}
+                </div>
+              </div>
+            ) : null}
             <div
               className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
             >
