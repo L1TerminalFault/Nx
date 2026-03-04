@@ -147,6 +147,7 @@ export default function Notification() {
       localStorage.setItem("__nx_connection_string__", codeFixed);
       if (!userName) localStorage.setItem("__nx_user_name__", userNameInput);
       router.replace(`/${codeFixed}`);
+      setNotConfigured(false);
     } else {
       setInputError((prev) => prev + 1);
     }
@@ -176,7 +177,7 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     if (connectionString && lastSegment === connectionString && userName) {
-      console.log(`${userName}, ${connectionString}`);
+      alert(`${error}, ${notConfigured}`);
       (async () => {
         setLoading(true);
         setError(null);
