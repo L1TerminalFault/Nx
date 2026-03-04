@@ -98,7 +98,7 @@ export default function Notification() {
     };
 
     const timer = setInterval(() => {
-      if (refreshing || loading) return;
+      if (refreshing || loading || error) return;
       poll();
     }, POLLING_INTERVAL);
 
@@ -176,6 +176,7 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     if (connectionString && lastSegment === connectionString && userName) {
+      console.log(`${userName}, ${connectionString}`);
       (async () => {
         setLoading(true);
         setError(null);
@@ -212,7 +213,7 @@ export default function Notification() {
     } else {
       setNotConfigured(true);
       setLoading(false);
-      return router.replace(`/configure`);
+      //return router.replace(`/configure`);
     }
   }, [connectionString, router, lastSegment, userName]);
 
@@ -266,18 +267,18 @@ export default function Notification() {
                 : 'Enter this code in the app, once you are done press "Done"'}
             </div>
             {!userName ? (
-              <div className="flex gap-1 flex-col py-3">
+              <div className="flex flex-col py-4">
                 <input
                   type="text"
                   autoFocus
-                  className="px-6 py-4 outline-none border border-gray-500 font-normal text-lg h-full w-full rounded-xl"
+                  className="px-6 py-4 outline-none border border-gray-500 font-normal text-lg h-full w-full rounded-2xl"
                   placeholder="Enter your username"
                   value={userNameInput}
                   onChange={(e) => setUserNameInput(e.target.value)}
                 ></input>
                 <div
                   id="errorText"
-                  className={`${errorOnUserName ? "" : "hidden"} mt-1.5 px-2 text-red-600 text-xs max-w-4/6`}
+                  className={`${errorOnUserName ? "" : "opacity-0"} mt-1.5 px-2 text-red-600 text-xs max-w-4/6`}
                 >
                   {errorOnUserName}
                 </div>
