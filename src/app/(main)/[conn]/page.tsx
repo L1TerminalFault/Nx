@@ -145,7 +145,7 @@ export default function Notification() {
       if (code.includes("-")) codeFixed = code;
       else codeFixed = code.slice(0, 4) + "-" + code.slice(4);
       localStorage.setItem("__nx_connection_string__", codeFixed);
-      localStorage.setItem("__nx_user_name__", userNameInput);
+      if (!userName) localStorage.setItem("__nx_user_name__", userNameInput);
       router.replace(`/${codeFixed}`);
     } else {
       setInputError((prev) => prev + 1);
@@ -213,6 +213,7 @@ export default function Notification() {
     } else {
       setNotConfigured(true);
       setLoading(false);
+      setUserNameInput(userName || "");
       //return router.replace(`/configure`);
     }
   }, [connectionString, router, lastSegment, userName]);
@@ -266,7 +267,7 @@ export default function Notification() {
                 ? 'Enter the Connection String from the app and press "Done"'
                 : 'Enter this code in the app, once you are done press "Done"'}
             </div>
-            {!userName ? (
+            {true ? (
               <div className="flex flex-col py-4">
                 <input
                   type="text"
