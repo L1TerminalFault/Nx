@@ -212,6 +212,7 @@ export default function Notification() {
     } else {
       setNotConfigured(true);
       setLoading(false);
+      return router.replace(`/configure`);
     }
   }, [connectionString, router, lastSegment, userName]);
 
