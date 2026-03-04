@@ -266,18 +266,18 @@ export default function Notification() {
                 : 'Enter this code in the app, once you are done press "Done"'}
             </div>
             {!userName ? (
-              <div className="flex gap-2 flex-col py-3">
+              <div className="flex gap-1 flex-col py-3">
                 <input
                   type="text"
                   autoFocus
-                  className="px-4 py-2 outline-none border border-gray-500 font-normal text-base h-full w-full rounded-xl"
+                  className="px-6 py-4 outline-none border border-gray-500 font-normal text-lg h-full w-full rounded-xl"
                   placeholder="Enter your username"
                   value={userNameInput}
                   onChange={(e) => setUserNameInput(e.target.value)}
                 ></input>
                 <div
                   id="errorText"
-                  className={`${errorOnUserName ? "" : "hidden"} mt-1.5 px-12 text-red-600 text-xs max-w-4/6`}
+                  className={`${errorOnUserName ? "" : "hidden"} mt-1.5 px-2 text-red-600 text-xs max-w-4/6`}
                 >
                   {errorOnUserName}
                 </div>
