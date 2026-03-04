@@ -25,7 +25,7 @@ export default function Notification() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [notConfigured, setNotConfigured] = useState(false);
+  const [notConfigured, setNotConfigured] = useState<boolean | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
@@ -192,6 +192,7 @@ export default function Notification() {
   useEffect(() => {
     // let socket: Socket;
     if (connectionString && lastSegment === connectionString && userName) {
+      setNotConfigured(false);
       // console.log("Fetching initial");
       (async () => {
         setLoading(true);
@@ -277,7 +278,7 @@ export default function Notification() {
           <div className="w-full h-full p-10 flex-1 flex items-center justify-center">
             <FaCircleNotch className="animate-spin text-4xl" />
           </div>
-        ) : notConfigured && !error && !loading && !init ? (
+        ) : notConfigured ? (
           <div className="flex flex-col items-center p-5">
             <div className="text-2xl p-4">Configure</div>
             <div className="text-center text-gray-400 p-2 pb-5">
