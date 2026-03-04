@@ -80,7 +80,7 @@ export default function Notification() {
   // }, [configureManually])
 
   useEffect(() => {
-    if (error) return;
+    if (error || !userName || loading) return () => {};
 
     const poll = async () => {
       try {
@@ -145,7 +145,7 @@ export default function Notification() {
       if (code.includes("-")) codeFixed = code;
       else codeFixed = code.slice(0, 4) + "-" + code.slice(4);
       localStorage.setItem("__nx_connection_string__", codeFixed);
-      if (!userName) localStorage.setItem("__nx_user_name__", userNameInput);
+      localStorage.setItem("__nx_user_name__", userNameInput);
       router.replace(`/${codeFixed}`);
       setNotConfigured(false);
     } else {
