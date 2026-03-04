@@ -108,7 +108,7 @@ export default function Notification() {
   const checkUserNameAvailability = async (userName: string) => {
     const userNameAvailable = await (
       await fetch(
-        `/api/notifications/getNotifications?userName=${userName}&connectionString=${connectionString}`,
+        `/api/notifications/isUserNameAvailable?userName=${userName}&connectionString=${connectionString}`,
       )
     ).json();
 
