@@ -273,7 +273,7 @@ export default function Notification() {
           <div className="w-full h-full p-10 flex-1 flex items-center justify-center">
             <FaCircleNotch className="animate-spin text-4xl" />
           </div>
-        ) : notConfigured && false ? (
+        ) : notConfigured && !error ? (
           <div className="flex flex-col items-center p-5">
             <div className="text-2xl p-4">Configure</div>
             <div className="text-center text-gray-400 p-2 pb-5">
