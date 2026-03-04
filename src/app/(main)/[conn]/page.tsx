@@ -37,6 +37,7 @@ export default function Notification() {
   const [userNameInput, setUserNameInput] = useState("");
   const [inputError, setInputError] = useState<number>(0);
   const [errorOnUserName, setErrorOnUserName] = useState<string | null>(null);
+  const [init, setInit] = useState<boolean>(true);
   const [connectionString, setConnectionString] = useState<string | null>(null);
   const [lastConnectionString, setLastConnectionString] = useState<
     string | null
@@ -81,7 +82,10 @@ export default function Notification() {
   // }, [configureManually])
 
   useEffect(() => {
-    if (error || !userName || loading) return () => {};
+    if (error || !userName || loading || init) {
+      setInit(false);
+      return () => {};
+    }
 
     console.log("polling");
     const poll = async () => {
@@ -106,7 +110,7 @@ export default function Notification() {
     }, POLLING_INTERVAL);
 
     return () => clearInterval(timer);
-  }, [connectionString, refreshing, loading, error, userName]);
+  }, [connectionString, refreshing, loading, error, userName, init]);
 
   const checkUserNameAvailability = async (userName: string) => {
     const userNameAvailable = await (
@@ -269,7 +273,7 @@ export default function Notification() {
           <div className="w-full h-full p-10 flex-1 flex items-center justify-center">
             <FaCircleNotch className="animate-spin text-4xl" />
           </div>
-        ) : notConfigured ? (
+        ) : notConfigured && false ? (
           <div className="flex flex-col items-center p-5">
             <div className="text-2xl p-4">Configure</div>
             <div className="text-center text-gray-400 p-2 pb-5">
