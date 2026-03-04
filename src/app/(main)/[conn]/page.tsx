@@ -34,14 +34,14 @@ export default function Notification() {
   const [code, setCode] = useState<string>(generateCode());
   const [configureManually, setConfigureManually] = useState<boolean>(false);
   const [manualInput, setManualInput] = useState<string>("");
+  const [userNameInput, setUserNameInput] = useState("");
   const [inputError, setInputError] = useState<number>(0);
-  // const inputRef = useRef(null);
-  const [connectionString, setConnectionString] = useState<string | null>(
-    localStorage?.getItem("__nx_connection_string__") || null,
-  );
+  const [errorOnUserName, setErrorOnUserName] = useState<string | null>(null);
+  const [connectionString, setConnectionString] = useState<string | null>(null);
   const [lastConnectionString, setLastConnectionString] = useState<
     string | null
-  >(localStorage?.getItem("__nx_last_connection_string__") || null);
+  >(null);
+  const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
     setConnectionString(
@@ -50,18 +50,23 @@ export default function Notification() {
     setLastConnectionString(
       localStorage?.getItem("__nx_last_connection_string__") || null,
     );
+    setUserName(localStorage?.getItem("__nx_user_name__") || null);
   }, []);
 
   const refresh = async () => {
-    if (refreshing || loading) return;
+    if (refreshing || loading || error) return;
     setRefreshing(true);
     try {
       const messagesFetched = await (
         await fetch(
-          `/api/notifications/getNotifications?connectionString=${connectionString}`,
+          `/api/notifications/getNotifications?userName=${userName}&connectionString=${connectionString}`,
         )
       ).json();
-      if (messagesFetched.messages) setNotifications(messagesFetched.messages);
+      if (messagesFetched.status === "success")
+        setNotifications(messagesFetched.messages);
+      else {
+        setError(messagesFetched.error);
+      }
     } catch {
     } finally {
       setRefreshing(false);
@@ -75,15 +80,20 @@ export default function Notification() {
   // }, [configureManually])
 
   useEffect(() => {
+    if (error) return;
+
     const poll = async () => {
       try {
         const messagesFetched = await (
           await fetch(
-            `/api/notifications/getNotifications?connectionString=${connectionString}`,
+            `/api/notifications/getNotifications?userName=${userName}&connectionString=${connectionString}`,
           )
         ).json();
-        if (messagesFetched.messages)
+        if (messagesFetched.status === "success")
           setNotifications(messagesFetched.messages);
+        else {
+          setError(messagesFetched.error);
+        }
       } catch {}
     };
 
@@ -93,9 +103,36 @@ export default function Notification() {
     }, POLLING_INTERVAL);
 
     return () => clearInterval(timer);
-  }, [connectionString, refreshing, loading]);
+  }, [connectionString, refreshing, loading, error, userName]);
 
-  const checkAndSubmit = (code: string) => {
+  const checkUserNameAvailability = async (userName: string) => {
+    const userNameAvailable = await (
+      await fetch(
+        `/api/notifications/getNotifications?userName=${userName}&connectionString=${connectionString}`,
+      )
+    ).json();
+
+    if (userNameAvailable.status !== "success")
+      // NOTE: false means unavailable
+      return false;
+
+    // NOTE: returns true if the user name is not used
+    return true;
+  };
+
+  const checkAndSubmit = async (code: string) => {
+    if (!userName) {
+      if (!userNameInput.length) {
+        setErrorOnUserName("User name required");
+        return;
+      }
+
+      if (!(await checkUserNameAvailability(userNameInput))) {
+        setErrorOnUserName("User name is occupied");
+        return;
+      }
+    }
+
     if (
       (code.length === 8 && !isNaN(Number(code))) ||
       (code.length === 9 &&
@@ -108,6 +145,7 @@ export default function Notification() {
       if (code.includes("-")) codeFixed = code;
       else codeFixed = code.slice(0, 4) + "-" + code.slice(4);
       localStorage.setItem("__nx_connection_string__", codeFixed);
+      localStorage.setItem("__nx_user_name__", userNameInput);
       router.replace(`/${codeFixed}`);
     } else {
       setInputError((prev) => prev + 1);
@@ -137,17 +175,21 @@ export default function Notification() {
 
   useEffect(() => {
     // let socket: Socket;
-    if (connectionString && lastSegment === connectionString) {
+    if (connectionString && lastSegment === connectionString && userName) {
       (async () => {
         setLoading(true);
         setError(null);
         try {
           const messagesFetched = await (
             await fetch(
-              `/api/notifications/getNotifications?connectionString=${connectionString}`,
+              `/api/notifications/getNotifications?userName=${userName}&connectionString=${connectionString}`,
             )
           ).json();
-          setNotifications(messagesFetched.messages);
+          if (messagesFetched.status === "success")
+            setNotifications(messagesFetched.messages);
+          else {
+            setError(messagesFetched.error);
+          }
 
           // socket = io(`${window.location.origin.toString()}:${PORT}`);
           // alert(window.location.origin.toString());
@@ -165,13 +207,13 @@ export default function Notification() {
           setLoading(false);
         }
       })();
-    } else if (connectionString) {
+    } else if (connectionString && userName) {
       return router.replace(`/${connectionString}`);
     } else {
       setNotConfigured(true);
       setLoading(false);
     }
-  }, [connectionString, router, lastSegment]);
+  }, [connectionString, router, lastSegment, userName]);
 
   return (
     <div className="min-h-screen bg-gray-900/10">
@@ -225,6 +267,24 @@ export default function Notification() {
             <div
               className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
             >
+              {!userName ? (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    autoFocus
+                    className="px-4 py-2 outline-none border-none font-normal text-base h-full w-full rounded-4xl"
+                    placeholder="Enter connection string"
+                    value={userNameInput}
+                    onChange={(e) => setUserNameInput(e.target.value)}
+                  ></input>
+                  <div
+                    id="errorText"
+                    className={`${errorOnUserName ? "" : "hidden"} mt-1.5 px-12 text-red-600 text-xs max-w-4/6`}
+                  >
+                    {errorOnUserName}
+                  </div>
+                </div>
+              ) : null}
               {configureManually ? (
                 <form
                   className="flex flex-col"

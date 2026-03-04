@@ -10,8 +10,17 @@ const messageSchema = new mongoose.Schema(
   { collection: "notifications" },
 );
 
+const allowedClientsSchema = new mongoose.Schema({
+  connectionString: String,
+  allowedClients: [String],
+});
+
 export const Message =
   mongoose.models.Message || mongoose.model("Message", messageSchema);
+
+export const AllowedClients =
+  mongoose.models.AllowedClients ||
+  mongoose.model("AllowedClients", allowedClientsSchema);
 
 await (async () => {
   await mongoose.connect(process.env.MONGODB_URI || "");
@@ -34,5 +43,22 @@ export const addMessage = async ({
     await messageObj.save();
   } catch (error) {
     return `DB Error: Unable to add message: ${error}`;
+  }
+};
+
+export const addClient = async ({
+  connectionString,
+  allowedClients,
+}: {
+  connectionString: string;
+  allowedClients: string[];
+}) => {
+  try {
+    await AllowedClients.findOneAndUpdate(
+      { connectionString },
+      { $push: { allowedClients } },
+    );
+  } catch (error) {
+    return `DB Error: Unable to update entry: ${error}`;
   }
 };
