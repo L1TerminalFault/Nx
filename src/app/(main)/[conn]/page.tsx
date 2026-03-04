@@ -264,27 +264,27 @@ export default function Notification() {
                 ? 'Enter the Connection String from the app and press "Done"'
                 : 'Enter this code in the app, once you are done press "Done"'}
             </div>
+            {!userName ? (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  autoFocus
+                  className="px-4 py-2 outline-none border-none font-normal text-base h-full w-full rounded-4xl"
+                  placeholder="Enter your username"
+                  value={userNameInput}
+                  onChange={(e) => setUserNameInput(e.target.value)}
+                ></input>
+                <div
+                  id="errorText"
+                  className={`${errorOnUserName ? "" : "hidden"} mt-1.5 px-12 text-red-600 text-xs max-w-4/6`}
+                >
+                  {errorOnUserName}
+                </div>
+              </div>
+            ) : null}
             <div
               className={`flex flex-col transition-all items-center justify-center gap-4 text-2xl font-bold border border-gray-500 ${!configureManually ? "px-10 py-7" : ""} rounded-4xl`}
             >
-              {!userName ? (
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    autoFocus
-                    className="px-4 py-2 outline-none border-none font-normal text-base h-full w-full rounded-4xl"
-                    placeholder="Enter connection string"
-                    value={userNameInput}
-                    onChange={(e) => setUserNameInput(e.target.value)}
-                  ></input>
-                  <div
-                    id="errorText"
-                    className={`${errorOnUserName ? "" : "hidden"} mt-1.5 px-12 text-red-600 text-xs max-w-4/6`}
-                  >
-                    {errorOnUserName}
-                  </div>
-                </div>
-              ) : null}
               {configureManually ? (
                 <form
                   className="flex flex-col"
