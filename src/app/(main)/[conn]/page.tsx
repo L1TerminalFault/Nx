@@ -138,6 +138,11 @@ export default function Notification() {
         return;
       }
 
+      if (userNameInput.includes(" ")) {
+        setErrorOnUserName("User name can not contain spaces");
+        return;
+      }
+
       if (!(await checkUserNameAvailability(userNameInput))) {
         setErrorOnUserName("User name is occupied");
         return;
